@@ -92,13 +92,26 @@ src/
 │   │   └── PrescriptionList.tsx
 │   ├── auth/
 │   │   ├── AuthContext.tsx
-│   │   ├── AuthPage.tsx
+│   │   ├── LoginDialog.tsx
+│   │   ├── SignUpDialog.tsx
 │   │   ├── LoginForm.tsx
 │   │   ├── PrivateRoute.tsx
 │   │   └── SignUpForm.tsx
+│   ├── form-sections/
+│   │   ├── FormHeader.tsx
+│   │   ├── FormFooter.tsx
+│   │   ├── PractitionerSection.tsx
+│   │   ├── PatientSection.tsx
+│   │   ├── PrescriptionSection.tsx
+│   │   └── SignatureSection.tsx
+│   ├── ui/
+│   │   ├── form-field-tooltip.tsx
+│   │   ├── dialog.tsx
+│   │   └── ... other UI components
 │   └── PrescriptionForm.tsx
 ├── lib/
-│   └── supabaseClient.ts
+│   ├── supabaseClient.ts
+│   └── readOnlyStyles.ts
 ├── App.tsx
 └── main.tsx
 ```

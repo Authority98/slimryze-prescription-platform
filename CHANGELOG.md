@@ -33,6 +33,8 @@ All notable changes to this project will be documented in this file.
 - Added conditional tooltip messages based on user authentication state
 - Added profile link in tooltip messages for logged-in users
 - Added sign-up call-to-action in tooltip messages for guest users
+- Added dialog-based authentication with modal forms
+- Integrated sign-in and sign-up forms into the main page header
 
 ### Authentication & User Management
 - Created login and signup forms with email/password
@@ -74,6 +76,11 @@ All notable changes to this project will be documented in this file.
 - Added sign-up call-to-action in tooltips for guest users
 - Improved authentication flow with dialog-based forms
 - Enhanced tooltip messages with contextual information
+- Added better call-to-action messages for guest users
+- Improved sign-in/sign-up experience with modal dialogs
+- Added informative tooltips with contextual messages
+- Enhanced tooltip messages with user-specific information
+- Improved form field styling for read-only state
 - Added better call-to-action messages for guest users
 - Improved sign-in/sign-up experience with modal dialogs
 
