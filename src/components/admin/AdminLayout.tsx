@@ -1,6 +1,8 @@
 import React from 'react';
-import { supabase } from '../../lib/supabase';
-import { useNavigate } from 'react-router-dom';
+import { supabase } from '../../lib/supabaseClient';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { LayoutDashboard, User, FileText, LogOut } from 'lucide-react';
+import { Button } from '../ui/button';
 
 interface Props {
   children: React.ReactNode;
@@ -8,10 +10,15 @@ interface Props {
 
 export function AdminLayout({ children }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate('/admin/login');
+  };
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
   };
 
   return (
@@ -21,30 +28,56 @@ export function AdminLayout({ children }: Props) {
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
-                <span className="text-xl font-bold text-blue-600">SlimRyze Admin</span>
+                <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  SlimRyze Admin
+                </span>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                <a
-                  href="/admin/profile"
-                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                <Link
+                  to="/admin/dashboard"
+                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                    isActive('/admin/dashboard')
+                      ? 'border-purple-600 text-gray-900'
+                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                  }`}
                 >
+                  <LayoutDashboard className="w-4 h-4 mr-2" />
+                  Dashboard
+                </Link>
+                <Link
+                  to="/admin/profile"
+                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                    isActive('/admin/profile')
+                      ? 'border-purple-600 text-gray-900'
+                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                  }`}
+                >
+                  <User className="w-4 h-4 mr-2" />
                   Profile
-                </a>
-                <a
-                  href="/admin/prescriptions"
-                  className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                </Link>
+                <Link
+                  to="/admin/prescriptions"
+                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                    isActive('/admin/prescriptions')
+                      ? 'border-purple-600 text-gray-900'
+                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                  }`}
                 >
+                  <FileText className="w-4 h-4 mr-2" />
                   Prescriptions
-                </a>
+                </Link>
               </div>
             </div>
             <div className="flex items-center">
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={handleSignOut}
-                className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+                className="text-gray-500 hover:text-gray-700 flex items-center gap-2"
               >
+                <LogOut className="w-4 h-4" />
                 Sign Out
-              </button>
+              </Button>
             </div>
           </div>
         </div>

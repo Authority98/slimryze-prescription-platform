@@ -1,6 +1,10 @@
-import { useState } from 'react';
-import { supabase } from '../../lib/supabaseClient';
+import { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../../lib/supabaseClient';
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
+import { Alert, AlertDescription } from "../../components/ui/alert";
+import { Mail, Lock, User, BadgeCheck, Building2, MapPin, Phone } from "lucide-react";
 
 export default function SignUpForm() {
   const navigate = useNavigate();
@@ -16,7 +20,7 @@ export default function SignUpForm() {
     clinicPhone: '',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -46,7 +50,25 @@ export default function SignUpForm() {
       if (signUpError) throw signUpError;
       
       if (data) {
-        navigate('/admin/login');
+        // Store form data in localStorage for pre-filling the profile
+        localStorage.setItem('initialProfileData', JSON.stringify({
+          email: formData.email,
+          full_name: formData.fullName,
+          license_number: formData.licenseNumber,
+          clinic_name: formData.clinicName,
+          clinic_address: formData.clinicAddress,
+          clinic_phone: formData.clinicPhone,
+        }));
+        
+        // Sign in the user immediately after signup
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: formData.email,
+          password: formData.password,
+        });
+
+        if (signInError) throw signInError;
+        
+        navigate('/admin/profile');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during sign up');
@@ -56,123 +78,138 @@ export default function SignUpForm() {
   };
 
   return (
-    <>
-      <div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Create your account
-        </h2>
-      </div>
-      <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-        <div className="rounded-md shadow-sm space-y-4">
-          <div>
-            <label htmlFor="email" className="sr-only">Email address</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="Email address"
-              value={formData.email}
-              onChange={handleChange}
-            />
+    <div className="space-y-6">
+      <form onSubmit={handleSubmit}>
+        <div className="space-y-4">
+          {error && (
+            <Alert variant="destructive" className="border-red-500/50 bg-red-500/10">
+              <AlertDescription className="text-red-600">{error}</AlertDescription>
+            </Alert>
+          )}
+
+          <div className="space-y-2">
+            <div className="relative">
+              <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="fullName"
+                name="fullName"
+                type="text"
+                placeholder="Full Name"
+                value={formData.fullName}
+                onChange={handleChange}
+                required
+                className="pl-10"
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor="password" className="sr-only">Password</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-            />
+
+          <div className="space-y-2">
+            <div className="relative">
+              <BadgeCheck className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="licenseNumber"
+                name="licenseNumber"
+                type="text"
+                placeholder="License Number"
+                value={formData.licenseNumber}
+                onChange={handleChange}
+                required
+                className="pl-10"
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor="fullName" className="sr-only">Full Name</label>
-            <input
-              id="fullName"
-              name="fullName"
-              type="text"
-              required
-              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="Full Name"
-              value={formData.fullName}
-              onChange={handleChange}
-            />
+
+          <div className="space-y-2">
+            <div className="relative">
+              <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="clinicName"
+                name="clinicName"
+                type="text"
+                placeholder="Clinic Name"
+                value={formData.clinicName}
+                onChange={handleChange}
+                required
+                className="pl-10"
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor="licenseNumber" className="sr-only">License Number</label>
-            <input
-              id="licenseNumber"
-              name="licenseNumber"
-              type="text"
-              required
-              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="License Number"
-              value={formData.licenseNumber}
-              onChange={handleChange}
-            />
+
+          <div className="space-y-2">
+            <div className="relative">
+              <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="clinicAddress"
+                name="clinicAddress"
+                type="text"
+                placeholder="Clinic Address"
+                value={formData.clinicAddress}
+                onChange={handleChange}
+                required
+                className="pl-10"
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor="clinicName" className="sr-only">Clinic Name</label>
-            <input
-              id="clinicName"
-              name="clinicName"
-              type="text"
-              required
-              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="Clinic Name"
-              value={formData.clinicName}
-              onChange={handleChange}
-            />
+
+          <div className="space-y-2">
+            <div className="relative">
+              <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="clinicPhone"
+                name="clinicPhone"
+                type="tel"
+                placeholder="Clinic Phone"
+                value={formData.clinicPhone}
+                onChange={handleChange}
+                required
+                className="pl-10"
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor="clinicAddress" className="sr-only">Clinic Address</label>
-            <input
-              id="clinicAddress"
-              name="clinicAddress"
-              type="text"
-              required
-              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="Clinic Address"
-              value={formData.clinicAddress}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="clinicPhone" className="sr-only">Clinic Phone</label>
-            <input
-              id="clinicPhone"
-              name="clinicPhone"
-              type="tel"
-              required
-              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="Clinic Phone"
-              value={formData.clinicPhone}
-              onChange={handleChange}
-            />
+
+          <div className="pt-4 border-t">
+            <div className="space-y-2">
+              <div className="relative">
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Email address"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="pl-10"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2 mt-4">
+              <div className="relative">
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  className="pl-10"
+                />
+              </div>
+            </div>
           </div>
         </div>
 
-        {error && (
-          <div className="text-red-500 text-sm text-center">
-            {error}
-          </div>
-        )}
-
-        <div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-          >
-            {loading ? 'Signing up...' : 'Sign up'}
-          </button>
-        </div>
+        <Button
+          type="submit"
+          className="w-full mt-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium"
+          disabled={loading}
+        >
+          {loading ? 'Signing up...' : 'Sign up'}
+        </Button>
       </form>
-    </>
+    </div>
   );
 } 

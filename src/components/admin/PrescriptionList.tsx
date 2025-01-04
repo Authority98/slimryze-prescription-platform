@@ -1,8 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabase';
-import type { Database } from '../../types/supabase';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabaseClient';
+import { LoadingPage } from '../ui/loading';
+import { Card } from '../ui/card';
+import { Button } from '../ui/button';
+import { Plus } from 'lucide-react';
 
-type Prescription = Database['public']['Tables']['prescriptions']['Row'];
+interface Prescription {
+  id: string;
+  patient_name: string;
+  created_at: string;
+  dosage: string;
+  status: string;
+}
 
 export function PrescriptionList() {
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
@@ -34,60 +43,70 @@ export function PrescriptionList() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">Prescription History</h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Patient
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Date
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Dosage
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {prescriptions.map((prescription) => (
-              <tr key={prescription.id}>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">
-                    {prescription.patient_name}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    DOB: {new Date(prescription.patient_dob).toLocaleDateString()}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(prescription.created_at).toLocaleDateString()}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {prescription.dosage}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                    ${prescription.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-                      prescription.status === 'approved' ? 'bg-green-100 text-green-800' : 
-                      'bg-red-100 text-red-800'}`}>
-                    {prescription.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="max-w-7xl mx-auto p-6 space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Prescription History</h2>
+        <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white">
+          <Plus className="w-4 h-4 mr-2" />
+          New Prescription
+        </Button>
       </div>
+
+      <Card className="bg-white/80 backdrop-blur-xl">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead>
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Patient
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Date
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Dosage
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {prescriptions.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="px-6 py-12 text-center text-gray-500">
+                    <p className="text-base">No prescriptions found</p>
+                    <p className="text-sm text-gray-400 mt-1">Create your first prescription to get started</p>
+                  </td>
+                </tr>
+              ) : (
+                prescriptions.map((prescription) => (
+                  <tr key={prescription.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {prescription.patient_name}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(prescription.created_at).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {prescription.dosage}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        {prescription.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </Card>
     </div>
   );
 }

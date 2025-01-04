@@ -5,6 +5,7 @@ import AuthPage from './components/auth/AuthPage';
 import { PractitionerProfile } from './components/admin/PractitionerProfile';
 import { PrescriptionList } from './components/admin/PrescriptionList';
 import { AdminLayout } from './components/admin/AdminLayout';
+import { Dashboard } from './components/admin/Dashboard';
 import PrescriptionForm from './components/PrescriptionForm';
 import { PrivateRoute } from './components/auth/PrivateRoute';
 
@@ -20,7 +21,17 @@ function App() {
             element={
               <PrivateRoute>
                 <AdminLayout>
-                  <Navigate to="/admin/profile" replace />
+                  <Navigate to="/admin/dashboard" replace />
+                </AdminLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <PrivateRoute>
+                <AdminLayout>
+                  <Dashboard />
                 </AdminLayout>
               </PrivateRoute>
             }
