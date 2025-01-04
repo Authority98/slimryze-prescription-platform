@@ -35,7 +35,6 @@ All notable changes to this project will be documented in this file.
 - Added sign-up call-to-action in tooltip messages for guest users
 - Added dialog-based authentication with modal forms
 - Integrated sign-in and sign-up forms into the main page header
-- Added automatic redirect to profile page after sign-up
 
 ### Authentication & User Management
 - Created login and signup forms with email/password
@@ -84,7 +83,6 @@ All notable changes to this project will be documented in this file.
 - Improved form field styling for read-only state
 - Added better call-to-action messages for guest users
 - Improved sign-in/sign-up experience with modal dialogs
-- Streamlined registration process with two-step flow
 
 ### Forms and Data Management
 - Created main prescription form
@@ -138,8 +136,6 @@ All notable changes to this project will be documented in this file.
 - Created separate dialog components for authentication
 - Improved tooltip message organization
 - Enhanced component reusability
-- Optimized form field organization
-- Improved authentication component structure
 
 ## [0.1.0] - 2024-03-XX
 - Initial release with core functionality 
