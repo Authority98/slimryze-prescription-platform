@@ -9,6 +9,7 @@ A modern, secure prescription management platform built with React, TypeScript, 
 - Email/password authentication using Supabase Auth
 - Protected routes for authenticated practitioners
 - Role-based access control
+- Automatic profile data population
 
 ### Practitioner Features
 - Comprehensive signup process collecting:
@@ -17,9 +18,11 @@ A modern, secure prescription management platform built with React, TypeScript, 
   - Clinic Name
   - Clinic Address
   - Clinic Phone
+  - Email (auto-populated)
 - Profile management
 - Prescription management dashboard
 - View and manage submitted prescriptions
+- Print prescriptions directly
 
 ### User Interface
 - Modern, responsive design using Tailwind CSS
@@ -27,6 +30,10 @@ A modern, secure prescription management platform built with React, TypeScript, 
 - Toggle-based authentication pages
 - Loading states and error handling
 - Mobile-friendly layout
+- Informative tooltips on all form fields
+- Read-only mode for guest users
+- Automatic date/time updates
+- HIPAA compliance notices
 
 ## 🛠️ Tech Stack
 
