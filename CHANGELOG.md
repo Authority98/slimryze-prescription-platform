@@ -21,6 +21,8 @@ All notable changes to this project will be documented in this file.
 - Added print functionality for prescriptions
 - Created separate header and footer components for better organization
 - Created reusable FormPill component for form title
+- Added environment variables configuration for deployment
+- Added custom favicon and proper page title
 
 ### Authentication & User Management
 - Created login and signup forms with email/password
@@ -50,6 +52,7 @@ All notable changes to this project will be documented in this file.
 - Reorganized form layout with header and footer components
 - Moved HIPAA compliance notice to form footer
 - Improved header layout with centered form title pill
+- Added custom favicon with brand colors
 
 ### Forms and Data Management
 - Created main prescription form
@@ -82,6 +85,9 @@ All notable changes to this project will be documented in this file.
 - Implemented loading states
 - Added data persistence with localStorage
 - Set up proper project structure
+- Added environment variables documentation
+- Fixed deployment configuration for Netlify
+- Added example environment file for reference
 
 ### Code Organization
 - Created separate components for form sections
