@@ -137,5 +137,5 @@ All notable changes to this project will be documented in this file.
 - Improved tooltip message organization
 - Enhanced component reusability
 
-## [0.1.0] - 2024-03-XX
+## [0.1.0] - 2024-03-17
 - Initial release with core functionality 
