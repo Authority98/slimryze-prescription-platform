@@ -10,6 +10,8 @@ import { FormActions } from './form-sections/FormActions';
 import { LoadingPage } from './ui/loading';
 import { FormData } from '../types/form';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './auth/AuthContext';
+import { TooltipProvider } from './ui/tooltip';
 
 const initialFormData: FormData = {
   email: '',
@@ -33,10 +35,15 @@ export default function PrescriptionForm() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const formRef = useRef<HTMLDivElement>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
-    loadPractitionerData();
-  }, []);
+    if (user) {
+      loadPractitionerData();
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
 
   const loadPractitionerData = async () => {
     try {
@@ -125,39 +132,43 @@ export default function PrescriptionForm() {
   }
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden py-6 sm:py-12">
-      {/* Header */}
-      <div className="max-w-4xl mx-auto px-4 mb-6">
-        <FormHeader 
-          formData={formData}
-          onSignOut={handleSignOut}
-          onPrint={handlePrint}
-        />
-      </div>
-
-      {/* Main form container */}
-      <div className="relative w-full max-w-4xl mx-auto" ref={formRef}>
-        {/* Decorative elements */}
+    <TooltipProvider>
+      <div className="min-h-screen bg-background relative overflow-hidden py-6 sm:py-12">
+        {/* Decorative elements for the entire page */}
         <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] bg-[length:50px_50px]" />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="h-[300px] w-[300px] bg-purple-500/10 rounded-full blur-3xl" />
           <div className="h-[300px] w-[300px] bg-blue-500/10 rounded-full blur-3xl -translate-x-1/3" />
         </div>
-        
-        {/* Form content */}
-        <div className="w-full p-8 space-y-6 bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-6">
-              <PractitionerSection formData={formData} onChange={handleChange} />
-              <PatientSection formData={formData} onChange={handleChange} />
-              <PrescriptionSection formData={formData} onChange={handleChange} />
-              <SignatureSection formData={formData} onChange={handleChange} />
-              <FormActions onReset={handleReset} />
-              <FormFooter />
+
+        {/* Main content container */}
+        <div className="relative w-full max-w-4xl mx-auto px-4">
+          <div className="space-y-6">
+            {/* Header */}
+            <FormHeader 
+              formData={formData}
+              onSignOut={handleSignOut}
+              onPrint={handlePrint}
+            />
+
+            {/* Form */}
+            <div ref={formRef}>
+              <div className="w-full p-8 space-y-6 bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="space-y-6">
+                    <PractitionerSection formData={formData} onChange={handleChange} />
+                    <PatientSection formData={formData} onChange={handleChange} isReadOnly={!user} />
+                    <PrescriptionSection formData={formData} onChange={handleChange} isReadOnly={!user} />
+                    <SignatureSection formData={formData} onChange={handleChange} isReadOnly={!user} />
+                    <FormActions onReset={handleReset} isReadOnly={!user} />
+                    <FormFooter />
+                  </div>
+                </form>
+              </div>
             </div>
-          </form>
+          </div>
         </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 }

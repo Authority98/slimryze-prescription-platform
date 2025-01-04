@@ -23,6 +23,11 @@ All notable changes to this project will be documented in this file.
 - Created reusable FormPill component for form title
 - Added environment variables configuration for deployment
 - Added custom favicon and proper page title
+- Added automatic email field population from Supabase user data
+- Made Practitioner Information fields read-only
+- Added custom tooltip messages for guest users
+- Created reusable FormFieldTooltip component for consistent tooltip behavior
+- Added read-only styles for form fields when user is not logged in
 
 ### Authentication & User Management
 - Created login and signup forms with email/password
@@ -53,6 +58,15 @@ All notable changes to this project will be documented in this file.
 - Moved HIPAA compliance notice to form footer
 - Improved header layout with centered form title pill
 - Added custom favicon with brand colors
+- Updated header layout and styling
+  - Made header slimmer with adjusted padding
+  - Matched header width with form container
+  - Improved welcome message for guest users
+- Renamed "SlimRyze Prescription Form" to "SlimRyze Prescription Platform"
+- Added Stethoscope icon to the platform title pill
+- Improved form field styling for read-only state
+- Updated tooltip messages to be more action-oriented
+- Added sign-up call-to-action in tooltips for guest users
 
 ### Forms and Data Management
 - Created main prescription form
@@ -88,6 +102,10 @@ All notable changes to this project will be documented in this file.
 - Added environment variables documentation
 - Fixed deployment configuration for Netlify
 - Added example environment file for reference
+- Created centralized readOnlyStyles for consistent styling
+- Improved component organization
+- Enhanced form field accessibility
+- Optimized header component structure
 
 ### Code Organization
 - Created separate components for form sections

@@ -1,16 +1,19 @@
 import React from 'react';
-import { User, Calendar, Clock, Info } from 'lucide-react';
+import { User, Calendar, Clock } from 'lucide-react';
 import { FormData } from '../../types/form';
 import { Input } from "../ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "../ui/tooltip";
+import { TooltipProvider } from "../ui/tooltip";
+import { readOnlyStyles } from '../../lib/readOnlyStyles';
+import { FormFieldTooltip } from '../ui/form-field-tooltip';
 
 interface Props {
   formData: FormData;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isReadOnly?: boolean;
 }
 
-export function PatientSection({ formData, onChange }: Props) {
+export function PatientSection({ formData, onChange, isReadOnly }: Props) {
   // Function to get today's date in YYYY-MM-DD format
   const getTodayDate = () => {
     const today = new Date();
@@ -60,67 +63,66 @@ export function PatientSection({ formData, onChange }: Props) {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="text"
-                  name="patientName"
-                  placeholder="Patient Name"
-                  value={formData.patientName}
-                  onChange={onChange}
-                  className="pl-10"
-                  required
-                />
-              </div>
+              <FormFieldTooltip
+                title="Patient Name"
+                description="Enter the patient's full name"
+                isReadOnly={isReadOnly}
+              >
+                <div className="relative">
+                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    name="patientName"
+                    placeholder="Patient Name"
+                    value={formData.patientName}
+                    onChange={onChange}
+                    className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
+                    required
+                    readOnly={isReadOnly}
+                  />
+                </div>
+              </FormFieldTooltip>
             </div>
             <div className="space-y-2">
               <div className="grid grid-cols-2 gap-2">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="relative">
-                      <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        type="date"
-                        name="patientDOB"
-                        placeholder="Date of Birth"
-                        value={formData.patientDOB}
-                        onChange={onChange}
-                        className="pl-10 pr-10 [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:left-0 [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-inner-spin-button]:appearance-none"
-                        required
-                      />
-                      <Info className="absolute right-3 top-3 h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="space-y-1">
-                      <p className="font-medium text-gray-900">Prescription Date</p>
-                      <p className="text-gray-500">Automatically set to today's date. You can edit this in your dashboard.</p>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
+                <FormFieldTooltip
+                  title="Prescription Date"
+                  description="Automatically set to today's date. You can edit this in your dashboard."
+                  isReadOnly={isReadOnly}
+                >
+                  <div className="relative">
+                    <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="date"
+                      name="patientDOB"
+                      placeholder="Date of Birth"
+                      value={formData.patientDOB}
+                      onChange={onChange}
+                      className={`pl-10 [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:left-0 [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-inner-spin-button]:appearance-none ${isReadOnly ? readOnlyStyles.input : ''}`}
+                      required
+                      readOnly={isReadOnly}
+                    />
+                  </div>
+                </FormFieldTooltip>
 
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="relative">
-                      <Clock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        type="time"
-                        name="prescriptionTime"
-                        value={formData.prescriptionTime}
-                        onChange={onChange}
-                        className="pl-10 pr-10 [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:left-0 [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-inner-spin-button]:appearance-none"
-                        required
-                      />
-                      <Info className="absolute right-3 top-3 h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="space-y-1">
-                      <p className="font-medium text-gray-900">Prescription Time</p>
-                      <p className="text-gray-500">Automatically set to current time. You can edit this in your dashboard.</p>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
+                <FormFieldTooltip
+                  title="Prescription Time"
+                  description="Automatically set to current time. You can edit this in your dashboard."
+                  isReadOnly={isReadOnly}
+                >
+                  <div className="relative">
+                    <Clock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="time"
+                      name="prescriptionTime"
+                      value={formData.prescriptionTime}
+                      onChange={onChange}
+                      className={`pl-10 [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:left-0 [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-inner-spin-button]:appearance-none ${isReadOnly ? readOnlyStyles.input : ''}`}
+                      required
+                      readOnly={isReadOnly}
+                    />
+                  </div>
+                </FormFieldTooltip>
               </div>
             </div>
           </div>
