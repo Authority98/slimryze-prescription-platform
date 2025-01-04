@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Lock, Stethoscope, User, Pill, FileSignature } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { FormHeader } from './form-sections/FormHeader';
+import { FormFooter } from './form-sections/FormFooter';
 import { PractitionerSection } from './form-sections/PractitionerSection';
 import { PatientSection } from './form-sections/PatientSection';
 import { PrescriptionSection } from './form-sections/PrescriptionSection';
@@ -9,6 +9,7 @@ import { SignatureSection } from './form-sections/SignatureSection';
 import { FormActions } from './form-sections/FormActions';
 import { LoadingPage } from './ui/loading';
 import { FormData } from '../types/form';
+import { useNavigate } from 'react-router-dom';
 
 const initialFormData: FormData = {
   email: '',
@@ -30,6 +31,8 @@ const initialFormData: FormData = {
 export default function PrescriptionForm() {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const formRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     loadPractitionerData();
@@ -86,31 +89,71 @@ export default function PrescriptionForm() {
     }));
   };
 
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate('/admin/login');
+  };
+
+  const handlePrint = () => {
+    const printWindow = window.open('', '_blank');
+    if (printWindow && formRef.current) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Prescription</title>
+            <link rel="stylesheet" href="/src/index.css">
+            <style>
+              @media print {
+                body { padding: 20px; }
+                button { display: none; }
+                .print-only { display: block; }
+              }
+            </style>
+          </head>
+          <body>
+            ${formRef.current.innerHTML}
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
+    }
+  };
+
   if (loading) {
     return <LoadingPage />;
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden py-6 sm:py-12">
-      {/* Decorative elements */}
-      <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] bg-[length:50px_50px]" />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="h-[300px] w-[300px] bg-purple-500/10 rounded-full blur-3xl" />
-        <div className="h-[300px] w-[300px] bg-blue-500/10 rounded-full blur-3xl -translate-x-1/3" />
+    <div className="min-h-screen bg-background relative overflow-hidden py-6 sm:py-12">
+      {/* Header */}
+      <div className="max-w-4xl mx-auto px-4 mb-6">
+        <FormHeader 
+          formData={formData}
+          onSignOut={handleSignOut}
+          onPrint={handlePrint}
+        />
       </div>
-      
+
       {/* Main form container */}
-      <div className="relative w-full max-w-4xl mx-auto">
+      <div className="relative w-full max-w-4xl mx-auto" ref={formRef}>
+        {/* Decorative elements */}
+        <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] bg-[length:50px_50px]" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="h-[300px] w-[300px] bg-purple-500/10 rounded-full blur-3xl" />
+          <div className="h-[300px] w-[300px] bg-blue-500/10 rounded-full blur-3xl -translate-x-1/3" />
+        </div>
+        
         {/* Form content */}
         <div className="w-full p-8 space-y-6 bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <FormHeader />
             <div className="space-y-6">
               <PractitionerSection formData={formData} onChange={handleChange} />
               <PatientSection formData={formData} onChange={handleChange} />
               <PrescriptionSection formData={formData} onChange={handleChange} />
               <SignatureSection formData={formData} onChange={handleChange} />
               <FormActions onReset={handleReset} />
+              <FormFooter />
             </div>
           </form>
         </div>

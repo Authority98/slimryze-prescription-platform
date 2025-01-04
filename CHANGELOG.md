@@ -17,6 +17,10 @@ All notable changes to this project will be documented in this file.
 - Added email field to Practitioner Information section
 - Added tooltips to form fields with helpful information
 - Added automatic date and time updates in Patient Information section
+- Added header with logged-in user information
+- Added print functionality for prescriptions
+- Created separate header and footer components for better organization
+- Created reusable FormPill component for form title
 
 ### Authentication & User Management
 - Created login and signup forms with email/password
@@ -26,6 +30,7 @@ All notable changes to this project will be documented in this file.
 - Added automatic login after signup
 - Implemented secure sign out functionality
 - Added automatic email field population from Supabase user data
+- Added sign out button in prescription form header
 
 ### UI/UX Improvements
 - Added gradient backgrounds and decorative elements
@@ -40,6 +45,11 @@ All notable changes to this project will be documented in this file.
 - Added informative tooltips to all form fields
 - Improved date and time picker styling with custom icons
 - Removed redundant browser picker icons while maintaining functionality
+- Added user information header with clinic details
+- Added print button for easy prescription printing
+- Reorganized form layout with header and footer components
+- Moved HIPAA compliance notice to form footer
+- Improved header layout with centered form title pill
 
 ### Forms and Data Management
 - Created main prescription form
@@ -81,6 +91,8 @@ All notable changes to this project will be documented in this file.
 - Added proper component props typing
 - Implemented consistent naming conventions
 - Added code documentation
+- Extracted FormPill into reusable component
+- Improved component organization with clear separation of concerns
 
 ## [0.1.0] - 2024-03-XX
 - Initial release with core functionality 
