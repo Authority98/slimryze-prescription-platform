@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './components/auth/AuthContext';
-import AuthPage from './components/auth/AuthPage';
 import { PractitionerProfile } from './components/admin/PractitionerProfile';
 import { PrescriptionList } from './components/admin/PrescriptionList';
 import { AdminLayout } from './components/admin/AdminLayout';
@@ -15,7 +14,6 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<PrescriptionForm />} />
-          <Route path="/admin/login" element={<AuthPage />} />
           <Route
             path="/admin"
             element={

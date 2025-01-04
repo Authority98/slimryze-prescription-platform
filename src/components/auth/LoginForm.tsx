@@ -1,12 +1,16 @@
 import React, { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
-import { Input } from "../../components/ui/input";
-import { Button } from "../../components/ui/button";
-import { Alert, AlertDescription } from "../../components/ui/alert";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Alert, AlertDescription } from "../ui/alert";
 import { Mail, Lock } from "lucide-react";
 
-export function LoginForm() {
+interface Props {
+  onSuccess?: () => void;
+}
+
+export function LoginForm({ onSuccess }: Props) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,7 +29,12 @@ export function LoginForm() {
       });
 
       if (error) throw error;
-      navigate('/admin/profile');
+      
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        navigate('/admin/profile');
+      }
     } catch (err: any) {
       setError(err.message);
     } finally {

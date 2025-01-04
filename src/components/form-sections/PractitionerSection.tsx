@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { readOnlyStyles } from '../../lib/readOnlyStyles';
 import { FormFieldTooltip } from '../ui/form-field-tooltip';
 import { TooltipProvider } from '../ui/tooltip';
+import { useAuth } from '../auth/AuthContext';
 import { Link } from 'react-router-dom';
 
 interface Props {
@@ -14,9 +15,20 @@ interface Props {
 }
 
 export function PractitionerSection({ formData, onChange }: Props) {
-  const readOnlyMessage = (
+  const { user } = useAuth();
+
+  const guestMessage = "Sign up for an account using the button above to get started.";
+
+  const loggedInMessage = (
     <span>
-      Ready to write prescriptions? <Link to="/admin/signup" className="text-purple-600 hover:text-purple-700 font-medium">Sign up now</Link> and complete your practitioner profile.
+      This information is managed in your{' '}
+      <Link 
+        to="/admin/profile" 
+        className="text-purple-600 hover:text-purple-700 font-medium"
+      >
+        practitioner profile
+      </Link>
+      .
     </span>
   );
 
@@ -36,7 +48,7 @@ export function PractitionerSection({ formData, onChange }: Props) {
                 title="Email"
                 description="This is your registered email address"
                 isReadOnly={true}
-                customReadOnlyMessage={readOnlyMessage}
+                customReadOnlyMessage={user ? loggedInMessage : guestMessage}
               >
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -58,7 +70,7 @@ export function PractitionerSection({ formData, onChange }: Props) {
                 title="Doctor Name"
                 description="Your full name as registered"
                 isReadOnly={true}
-                customReadOnlyMessage={readOnlyMessage}
+                customReadOnlyMessage={user ? loggedInMessage : guestMessage}
               >
                 <div className="relative">
                   <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -80,7 +92,7 @@ export function PractitionerSection({ formData, onChange }: Props) {
                 title="License Number"
                 description="Your medical license number"
                 isReadOnly={true}
-                customReadOnlyMessage={readOnlyMessage}
+                customReadOnlyMessage={user ? loggedInMessage : guestMessage}
               >
                 <div className="relative">
                   <BadgeCheck className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -102,7 +114,7 @@ export function PractitionerSection({ formData, onChange }: Props) {
                 title="Clinic Name"
                 description="Your registered clinic name"
                 isReadOnly={true}
-                customReadOnlyMessage={readOnlyMessage}
+                customReadOnlyMessage={user ? loggedInMessage : guestMessage}
               >
                 <div className="relative">
                   <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -124,7 +136,7 @@ export function PractitionerSection({ formData, onChange }: Props) {
                 title="Clinic Address"
                 description="Your clinic's registered address"
                 isReadOnly={true}
-                customReadOnlyMessage={readOnlyMessage}
+                customReadOnlyMessage={user ? loggedInMessage : guestMessage}
               >
                 <div className="relative">
                   <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -146,7 +158,7 @@ export function PractitionerSection({ formData, onChange }: Props) {
                 title="Clinic Phone"
                 description="Your clinic's contact number"
                 isReadOnly={true}
-                customReadOnlyMessage={readOnlyMessage}
+                customReadOnlyMessage={user ? loggedInMessage : guestMessage}
               >
                 <div className="relative">
                   <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />

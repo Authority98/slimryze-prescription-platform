@@ -10,6 +10,8 @@ A modern, secure prescription management platform built with React, TypeScript, 
 - Protected routes for authenticated practitioners
 - Role-based access control
 - Automatic profile data population
+- Dialog-based sign-in and sign-up forms
+- Seamless authentication flow
 
 ### Practitioner Features
 - Comprehensive signup process collecting:
@@ -27,13 +29,15 @@ A modern, secure prescription management platform built with React, TypeScript, 
 ### User Interface
 - Modern, responsive design using Tailwind CSS
 - Clean and intuitive navigation
-- Toggle-based authentication pages
+- Dialog-based authentication
 - Loading states and error handling
 - Mobile-friendly layout
-- Informative tooltips on all form fields
+- Informative tooltips with contextual messages
 - Read-only mode for guest users
 - Automatic date/time updates
 - HIPAA compliance notices
+- Conditional UI elements based on auth state
+- Profile-aware tooltip messages
 
 ## 🛠️ Tech Stack
 

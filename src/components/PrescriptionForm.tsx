@@ -98,7 +98,7 @@ export default function PrescriptionForm() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    navigate('/admin/login');
+    navigate('/');
   };
 
   const handlePrint = () => {
@@ -148,7 +148,6 @@ export default function PrescriptionForm() {
             <FormHeader 
               formData={formData}
               onSignOut={handleSignOut}
-              onPrint={handlePrint}
             />
 
             {/* Form */}
@@ -160,7 +159,7 @@ export default function PrescriptionForm() {
                     <PatientSection formData={formData} onChange={handleChange} isReadOnly={!user} />
                     <PrescriptionSection formData={formData} onChange={handleChange} isReadOnly={!user} />
                     <SignatureSection formData={formData} onChange={handleChange} isReadOnly={!user} />
-                    <FormActions onReset={handleReset} isReadOnly={!user} />
+                    <FormActions onPrint={handlePrint} isReadOnly={!user} />
                     <FormFooter />
                   </div>
                 </form>

@@ -1,24 +1,27 @@
 import React from 'react';
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
+import { Printer } from 'lucide-react';
 
 interface Props {
-  onReset: () => void;
+  onPrint: () => void;
   isReadOnly?: boolean;
 }
 
-export function FormActions({ onReset, isReadOnly }: Props) {
+export function FormActions({ onPrint, isReadOnly }: Props) {
   return (
     <Card>
       <CardContent className="pt-6">
         <div className="flex justify-end space-x-4">
           <Button
             type="button"
-            onClick={onReset}
+            onClick={onPrint}
             variant="outline"
+            className="flex items-center gap-2"
             disabled={isReadOnly}
           >
-            Clear Form
+            <Printer className="h-4 w-4" />
+            Print
           </Button>
           <Button
             type="submit"

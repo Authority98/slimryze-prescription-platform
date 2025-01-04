@@ -1,19 +1,23 @@
-import { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
-import { Input } from "../../components/ui/input";
-import { Button } from "../../components/ui/button";
-import { Alert, AlertDescription } from "../../components/ui/alert";
-import { Mail, Lock, User, BadgeCheck, Building2, MapPin, Phone } from "lucide-react";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Alert, AlertDescription } from "../ui/alert";
+import { Mail, Lock, User, Phone, Building2, BadgeCheck } from "lucide-react";
 
-export default function SignUpForm() {
+interface Props {
+  onSuccess?: () => void;
+}
+
+export function SignUpForm({ onSuccess }: Props) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    fullName: '',
+    doctorName: '',
     licenseNumber: '',
     clinicName: '',
     clinicAddress: '',
@@ -30,48 +34,39 @@ export default function SignUpForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    setError('');
 
     try {
-      const { data, error: signUpError } = await supabase.auth.signUp({
+      const { error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
-        options: {
-          data: {
-            full_name: formData.fullName,
+      });
+
+      if (signUpError) throw signUpError;
+
+      const { error: profileError } = await supabase
+        .from('practitioners')
+        .insert([
+          {
+            user_id: (await supabase.auth.getUser()).data.user?.id,
+            doctor_name: formData.doctorName,
             license_number: formData.licenseNumber,
             clinic_name: formData.clinicName,
             clinic_address: formData.clinicAddress,
             clinic_phone: formData.clinicPhone,
+            email: formData.email,
           },
-        },
-      });
+        ]);
 
-      if (signUpError) throw signUpError;
+      if (profileError) throw profileError;
       
-      if (data) {
-        // Store form data in localStorage for pre-filling the profile
-        localStorage.setItem('initialProfileData', JSON.stringify({
-          email: formData.email,
-          full_name: formData.fullName,
-          license_number: formData.licenseNumber,
-          clinic_name: formData.clinicName,
-          clinic_address: formData.clinicAddress,
-          clinic_phone: formData.clinicPhone,
-        }));
-        
-        // Sign in the user immediately after signup
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email: formData.email,
-          password: formData.password,
-        });
-
-        if (signInError) throw signInError;
-        
+      if (onSuccess) {
+        onSuccess();
+      } else {
         navigate('/admin/profile');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred during sign up');
+    } catch (err: any) {
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -82,20 +77,52 @@ export default function SignUpForm() {
       <form onSubmit={handleSubmit}>
         <div className="space-y-4">
           {error && (
-            <Alert variant="destructive" className="border-red-500/50 bg-red-500/10">
-              <AlertDescription className="text-red-600">{error}</AlertDescription>
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
+          
+          <div className="space-y-2">
+            <div className="relative">
+              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Email address"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="pl-10"
+              />
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <div className="relative">
+              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                className="pl-10"
+              />
+            </div>
+          </div>
 
           <div className="space-y-2">
             <div className="relative">
               <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
-                id="fullName"
-                name="fullName"
+                id="doctorName"
+                name="doctorName"
                 type="text"
-                placeholder="Full Name"
-                value={formData.fullName}
+                placeholder="Doctor's Full Name"
+                value={formData.doctorName}
                 onChange={handleChange}
                 required
                 className="pl-10"
@@ -137,7 +164,7 @@ export default function SignUpForm() {
 
           <div className="space-y-2">
             <div className="relative">
-              <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="clinicAddress"
                 name="clinicAddress"
@@ -166,40 +193,6 @@ export default function SignUpForm() {
               />
             </div>
           </div>
-
-          <div className="pt-4 border-t">
-            <div className="space-y-2">
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="Email address"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="pl-10"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2 mt-4">
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  className="pl-10"
-                />
-              </div>
-            </div>
-          </div>
         </div>
 
         <Button
@@ -207,7 +200,7 @@ export default function SignUpForm() {
           className="w-full mt-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium"
           disabled={loading}
         >
-          {loading ? 'Signing up...' : 'Sign up'}
+          {loading ? 'Creating account...' : 'Create account'}
         </Button>
       </form>
     </div>

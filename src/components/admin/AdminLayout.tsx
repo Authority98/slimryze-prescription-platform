@@ -14,7 +14,7 @@ export function AdminLayout({ children }: Props) {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    navigate('/admin/login');
+    navigate('/');
   };
 
   const isActive = (path: string) => {

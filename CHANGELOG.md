@@ -28,6 +28,11 @@ All notable changes to this project will be documented in this file.
 - Added custom tooltip messages for guest users
 - Created reusable FormFieldTooltip component for consistent tooltip behavior
 - Added read-only styles for form fields when user is not logged in
+- Added dialog-based sign-in and sign-up functionality in the header
+- Integrated sign-in and sign-up forms into the main page
+- Added conditional tooltip messages based on user authentication state
+- Added profile link in tooltip messages for logged-in users
+- Added sign-up call-to-action in tooltip messages for guest users
 
 ### Authentication & User Management
 - Created login and signup forms with email/password
@@ -67,6 +72,10 @@ All notable changes to this project will be documented in this file.
 - Improved form field styling for read-only state
 - Updated tooltip messages to be more action-oriented
 - Added sign-up call-to-action in tooltips for guest users
+- Improved authentication flow with dialog-based forms
+- Enhanced tooltip messages with contextual information
+- Added better call-to-action messages for guest users
+- Improved sign-in/sign-up experience with modal dialogs
 
 ### Forms and Data Management
 - Created main prescription form
@@ -117,6 +126,9 @@ All notable changes to this project will be documented in this file.
 - Added code documentation
 - Extracted FormPill into reusable component
 - Improved component organization with clear separation of concerns
+- Created separate dialog components for authentication
+- Improved tooltip message organization
+- Enhanced component reusability
 
 ## [0.1.0] - 2024-03-XX
 - Initial release with core functionality 

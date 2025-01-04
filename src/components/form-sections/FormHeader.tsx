@@ -1,23 +1,24 @@
 import React from 'react';
-import { User, LogOut, Printer, LogIn } from 'lucide-react';
+import { User, LogOut, LayoutDashboard } from 'lucide-react';
 import { Button } from "../ui/button";
 import { FormData } from '../../types/form';
 import { useAuth } from '../auth/AuthContext';
-import { useNavigate } from 'react-router-dom';
 import { FormPill } from '../ui/form-pill';
+import { LoginDialog } from '../auth/LoginDialog';
+import { SignUpDialog } from '../auth/SignUpDialog';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   formData: FormData;
   onSignOut: () => void;
-  onPrint: () => void;
 }
 
-export function FormHeader({ formData, onSignOut, onPrint }: Props) {
+export function FormHeader({ formData, onSignOut }: Props) {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const handleSignIn = () => {
-    navigate('/admin/login');
+  const handleDashboard = () => {
+    navigate('/admin/dashboard');
   };
 
   return (
@@ -42,26 +43,33 @@ export function FormHeader({ formData, onSignOut, onPrint }: Props) {
         </div>
 
         <div className="flex items-center gap-3">
-          {user && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex items-center gap-2"
-              onClick={onPrint}
-            >
-              <Printer className="h-4 w-4" />
-              Print
-            </Button>
+          {user ? (
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-2"
+                onClick={handleDashboard}
+              >
+                <LayoutDashboard className="h-4 w-4" />
+                Dashboard
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onSignOut}
+                className="text-gray-500 hover:text-gray-700 flex items-center gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <div className="flex items-center gap-3">
+              <LoginDialog />
+              <SignUpDialog />
+            </div>
           )}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={user ? onSignOut : handleSignIn}
-            className="text-gray-500 hover:text-gray-700 flex items-center gap-2"
-          >
-            {user ? <LogOut className="h-4 w-4" /> : <LogIn className="h-4 w-4" />}
-            {user ? 'Sign Out' : 'Sign In'}
-          </Button>
         </div>
       </div>
     </div>
