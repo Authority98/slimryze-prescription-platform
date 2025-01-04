@@ -1,4 +1,5 @@
 export interface FormData {
+  email: string;
   doctorName: string;
   licenseNumber: string;
   clinicName: string;
@@ -6,6 +7,7 @@ export interface FormData {
   clinicPhone: string;
   patientName: string;
   patientDOB: string;
+  prescriptionTime: string;
   dosage: string;
   quantity: string;
   refills: string;

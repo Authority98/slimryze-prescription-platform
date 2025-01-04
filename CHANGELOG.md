@@ -14,6 +14,9 @@ All notable changes to this project will be documented in this file.
 - Implemented responsive navigation with active states
 - Created dashboard with statistics and quick actions
 - Added prescription management system
+- Added email field to Practitioner Information section
+- Added tooltips to form fields with helpful information
+- Added automatic date and time updates in Patient Information section
 
 ### Authentication & User Management
 - Created login and signup forms with email/password
@@ -22,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Added user profile management
 - Added automatic login after signup
 - Implemented secure sign out functionality
+- Added automatic email field population from Supabase user data
 
 ### UI/UX Improvements
 - Added gradient backgrounds and decorative elements
@@ -32,6 +36,10 @@ All notable changes to this project will be documented in this file.
 - Implemented form field icons and styling
 - Added proper error and success messages
 - Created empty states for lists
+- Made Practitioner Information fields read-only
+- Added informative tooltips to all form fields
+- Improved date and time picker styling with custom icons
+- Removed redundant browser picker icons while maintaining functionality
 
 ### Forms and Data Management
 - Created main prescription form
@@ -42,6 +50,8 @@ All notable changes to this project will be documented in this file.
 - Implemented form validation
 - Added form reset functionality
 - Created prescription history view
+- Added automatic date and time field updates
+- Added email field with auto-population
 
 ### Styling and Design
 - Implemented consistent color scheme with purple/blue gradients

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Lock, Stethoscope, User, Pill, FileSignature } from 'lucide-react';
+import { supabase } from '../lib/supabaseClient';
 import { FormHeader } from './form-sections/FormHeader';
 import { PractitionerSection } from './form-sections/PractitionerSection';
 import { PatientSection } from './form-sections/PatientSection';
@@ -10,6 +11,7 @@ import { LoadingPage } from './ui/loading';
 import { FormData } from '../types/form';
 
 const initialFormData: FormData = {
+  email: '',
   doctorName: '',
   licenseNumber: '',
   clinicName: '',
@@ -17,6 +19,7 @@ const initialFormData: FormData = {
   clinicPhone: '',
   patientName: '',
   patientDOB: '',
+  prescriptionTime: '',
   dosage: '',
   quantity: '',
   refills: '',
@@ -28,13 +31,30 @@ export default function PrescriptionForm() {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [loading, setLoading] = useState(true);
 
-  // Simulate loading for demonstration
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
+  useEffect(() => {
+    loadPractitionerData();
   }, []);
+
+  const loadPractitionerData = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setFormData(prev => ({
+          ...prev,
+          email: user.email || '',
+          doctorName: user.user_metadata.full_name || '',
+          licenseNumber: user.user_metadata.license_number || '',
+          clinicName: user.user_metadata.clinic_name || '',
+          clinicAddress: user.user_metadata.clinic_address || '',
+          clinicPhone: user.user_metadata.clinic_phone || '',
+        }));
+      }
+    } catch (error) {
+      console.error('Error loading practitioner data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,7 +74,16 @@ export default function PrescriptionForm() {
   };
 
   const handleReset = () => {
-    setFormData(initialFormData);
+    setFormData(prev => ({
+      ...initialFormData,
+      // Keep practitioner data on reset
+      email: prev.email,
+      doctorName: prev.doctorName,
+      licenseNumber: prev.licenseNumber,
+      clinicName: prev.clinicName,
+      clinicAddress: prev.clinicAddress,
+      clinicPhone: prev.clinicPhone,
+    }));
   };
 
   if (loading) {
