@@ -95,6 +95,18 @@ All notable changes to this project will be documented in this file.
 - Created prescription history view
 - Added automatic date and time field updates
 - Added email field with auto-population
+- Updated Practitioner Information section with new fields:
+  - Renamed License Number to NPI Number
+  - Added DEA Number field
+  - Added Clinic Fax field
+  - Improved field organization with two-column layout
+  - Updated icons for better visual representation (MapPin for location)
+- Updated Practitioner Profile in admin area to match frontend fields:
+  - Added NPI Number field (renamed from License Number)
+  - Added DEA Number field
+  - Added Clinic Fax field
+  - Improved layout with consistent two-column design
+  - Matched icon usage with frontend for consistency
 
 ### Styling and Design
 - Implemented consistent color scheme with purple/blue gradients

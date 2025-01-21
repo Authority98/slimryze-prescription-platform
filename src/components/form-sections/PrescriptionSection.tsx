@@ -8,6 +8,9 @@ import { Textarea } from "../ui/textarea";
 import { readOnlyStyles } from '../../lib/readOnlyStyles';
 import { FormFieldTooltip } from '../ui/form-field-tooltip';
 import { TooltipProvider } from '../ui/tooltip';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "../ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { cn } from "../../lib/utils";
 
 interface Props {
   formData: FormData;
@@ -16,6 +19,21 @@ interface Props {
 }
 
 export function PrescriptionSection({ formData, onChange, isReadOnly }: Props) {
+  const quantityOptions = ["10", "30", "60", "90"];
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const handleQuantitySelect = (currentValue: string) => {
+    const event = {
+      target: {
+        name: 'quantity',
+        value: currentValue,
+        type: 'number'
+      }
+    } as React.ChangeEvent<HTMLInputElement>;
+    onChange(event);
+    setIsOpen(false);
+  };
+
   return (
     <TooltipProvider>
       <Card>
@@ -57,21 +75,48 @@ export function PrescriptionSection({ formData, onChange, isReadOnly }: Props) {
             <div className="space-y-2">
               <FormFieldTooltip
                 title="Quantity"
-                description="Enter the number of units prescribed"
+                description="Enter or select the number of units prescribed"
                 isReadOnly={isReadOnly}
               >
-                <div className="relative">
-                  <Hash className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="number"
-                    name="quantity"
-                    placeholder="Quantity"
-                    value={formData.quantity}
-                    onChange={onChange}
-                    className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
-                    required
-                    readOnly={isReadOnly}
-                  />
+                <div className="relative w-full">
+                  <Popover open={isOpen} onOpenChange={setIsOpen}>
+                    <PopoverTrigger asChild>
+                      <div className="relative">
+                        <Hash className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
+                        <Input
+                          type="number"
+                          name="quantity"
+                          placeholder="Enter or select quantity"
+                          value={formData.quantity}
+                          onChange={onChange}
+                          className={`pl-10 w-full ${isReadOnly ? readOnlyStyles.input : ''}`}
+                          required
+                          readOnly={isReadOnly}
+                          min="1"
+                        />
+                      </div>
+                    </PopoverTrigger>
+                    {!isReadOnly && (
+                      <PopoverContent 
+                        className="p-0" 
+                        style={{ width: 'var(--radix-popover-trigger-width)' }}
+                        align="start"
+                      >
+                        <div className="w-full">
+                          {quantityOptions.map((option) => (
+                            <button
+                              key={option}
+                              className="w-full text-left px-4 py-2 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground outline-none"
+                              onClick={() => handleQuantitySelect(option)}
+                              type="button"
+                            >
+                              {option}
+                            </button>
+                          ))}
+                        </div>
+                      </PopoverContent>
+                    )}
+                  </Popover>
                 </div>
               </FormFieldTooltip>
             </div>
@@ -97,6 +142,8 @@ export function PrescriptionSection({ formData, onChange, isReadOnly }: Props) {
                       <SelectItem value="1">1</SelectItem>
                       <SelectItem value="2">2</SelectItem>
                       <SelectItem value="3">3</SelectItem>
+                      <SelectItem value="4">4</SelectItem>
+                      <SelectItem value="5">5</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -104,15 +151,15 @@ export function PrescriptionSection({ formData, onChange, isReadOnly }: Props) {
             </div>
             <div className="space-y-2 md:col-span-2">
               <FormFieldTooltip
-                title="Special Instructions"
-                description="Enter any special instructions or notes"
+                title="Directions"
+                description="Enter any specific directions for the patient"
                 isReadOnly={isReadOnly}
               >
                 <div className="relative">
                   <FileText className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Textarea
                     name="instructions"
-                    placeholder="Special Instructions"
+                    placeholder="Take ONE to TWO capsules by mouth at 9:00 AM as directed by your prescriber. It is advisable to take a multivitamin supplement once a day."
                     value={formData.instructions}
                     onChange={onChange}
                     className={`min-h-[100px] pl-10 ${isReadOnly ? readOnlyStyles.textarea : ''}`}

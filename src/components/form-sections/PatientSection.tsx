@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Calendar, Clock } from 'lucide-react';
+import { User, Calendar, Mail, MapPin, Users, Phone } from 'lucide-react';
 import { FormData } from '../../types/form';
 import { Input } from "../ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -23,29 +23,13 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
     return `${year}-${month}-${day}`;
   };
 
-  // Function to get current time in HH:MM format
-  const getCurrentTime = () => {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    return `${hours}:${minutes}`;
-  };
-
-  // Auto-update date and time fields if empty
+  // Auto-update date field if empty
   React.useEffect(() => {
     if (!formData.patientDOB) {
       onChange({
         target: {
           name: 'patientDOB',
           value: getTodayDate()
-        }
-      } as React.ChangeEvent<HTMLInputElement>);
-    }
-    if (!formData.prescriptionTime) {
-      onChange({
-        target: {
-          name: 'prescriptionTime',
-          value: getCurrentTime()
         }
       } as React.ChangeEvent<HTMLInputElement>);
     }
@@ -82,48 +66,109 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
                   />
                 </div>
               </FormFieldTooltip>
+
+              <FormFieldTooltip
+                title="Patient Phone Number"
+                description="Enter the patient's phone number"
+                isReadOnly={isReadOnly}
+              >
+                <div className="relative">
+                  <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="tel"
+                    name="patientPhone"
+                    placeholder="Patient Phone Number"
+                    value={formData.patientPhone}
+                    onChange={onChange}
+                    className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
+                    required
+                    readOnly={isReadOnly}
+                  />
+                </div>
+              </FormFieldTooltip>
+
+              <FormFieldTooltip
+                title="Date of Birth"
+                description="Enter the patient's date of birth"
+                isReadOnly={isReadOnly}
+              >
+                <div className="relative">
+                  <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="date"
+                    name="patientDOB"
+                    value={formData.patientDOB}
+                    onChange={onChange}
+                    className={`pl-10 [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:left-0 [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-inner-spin-button]:appearance-none ${isReadOnly ? readOnlyStyles.input : ''}`}
+                    required
+                    readOnly={isReadOnly}
+                  />
+                </div>
+              </FormFieldTooltip>
             </div>
             <div className="space-y-2">
-              <div className="grid grid-cols-2 gap-2">
-                <FormFieldTooltip
-                  title="Prescription Date"
-                  description="Automatically set to today's date. You can edit this in your dashboard."
-                  isReadOnly={isReadOnly}
-                >
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="date"
-                      name="patientDOB"
-                      placeholder="Date of Birth"
-                      value={formData.patientDOB}
-                      onChange={onChange}
-                      className={`pl-10 [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:left-0 [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-inner-spin-button]:appearance-none ${isReadOnly ? readOnlyStyles.input : ''}`}
-                      required
-                      readOnly={isReadOnly}
-                    />
-                  </div>
-                </FormFieldTooltip>
+              <FormFieldTooltip
+                title="Patient Email"
+                description="Enter the patient's email address"
+                isReadOnly={isReadOnly}
+              >
+                <div className="relative">
+                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="email"
+                    name="patientEmail"
+                    placeholder="Patient Email"
+                    value={formData.patientEmail}
+                    onChange={onChange}
+                    className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
+                    required
+                    readOnly={isReadOnly}
+                  />
+                </div>
+              </FormFieldTooltip>
 
-                <FormFieldTooltip
-                  title="Prescription Time"
-                  description="Automatically set to current time. You can edit this in your dashboard."
-                  isReadOnly={isReadOnly}
-                >
-                  <div className="relative">
-                    <Clock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="time"
-                      name="prescriptionTime"
-                      value={formData.prescriptionTime}
-                      onChange={onChange}
-                      className={`pl-10 [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:left-0 [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-inner-spin-button]:appearance-none ${isReadOnly ? readOnlyStyles.input : ''}`}
-                      required
-                      readOnly={isReadOnly}
-                    />
-                  </div>
-                </FormFieldTooltip>
-              </div>
+              <FormFieldTooltip
+                title="Patient Address"
+                description="Enter the patient's full address"
+                isReadOnly={isReadOnly}
+              >
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    name="patientAddress"
+                    placeholder="Patient Address"
+                    value={formData.patientAddress}
+                    onChange={onChange}
+                    className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
+                    required
+                    readOnly={isReadOnly}
+                  />
+                </div>
+              </FormFieldTooltip>
+
+              <FormFieldTooltip
+                title="Gender"
+                description="Select the patient's gender"
+                isReadOnly={isReadOnly}
+              >
+                <div className="relative">
+                  <Users className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <select
+                    name="patientGender"
+                    value={formData.patientGender}
+                    onChange={onChange as any}
+                    className={`w-full pl-10 h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${isReadOnly ? readOnlyStyles.input : ''}`}
+                    required
+                    disabled={isReadOnly}
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </FormFieldTooltip>
             </div>
           </div>
         </CardContent>

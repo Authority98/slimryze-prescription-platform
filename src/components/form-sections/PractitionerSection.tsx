@@ -1,13 +1,10 @@
 import React from 'react';
-import { User, Mail, BadgeCheck, Building2, MapPin, Phone } from 'lucide-react';
+import { User, Building2, Phone, Hash, FileText, Printer, Mail, MapPin } from 'lucide-react';
 import { FormData } from '../../types/form';
 import { Input } from "../ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { readOnlyStyles } from '../../lib/readOnlyStyles';
+import { TooltipProvider } from "../ui/tooltip";
 import { FormFieldTooltip } from '../ui/form-field-tooltip';
-import { TooltipProvider } from '../ui/tooltip';
-import { useAuth } from '../auth/AuthContext';
-import { Link } from 'react-router-dom';
 
 interface Props {
   formData: FormData;
@@ -15,23 +12,6 @@ interface Props {
 }
 
 export function PractitionerSection({ formData, onChange }: Props) {
-  const { user } = useAuth();
-
-  const guestMessage = "Sign up for an account using the button above to get started.";
-
-  const loggedInMessage = (
-    <span>
-      This information is managed in your{' '}
-      <Link 
-        to="/admin/profile" 
-        className="text-purple-600 hover:text-purple-700 font-medium"
-      >
-        practitioner profile
-      </Link>
-      .
-    </span>
-  );
-
   return (
     <TooltipProvider>
       <Card>
@@ -46,31 +26,25 @@ export function PractitionerSection({ formData, onChange }: Props) {
             <div className="space-y-2">
               <FormFieldTooltip
                 title="Email"
-                description="This is your registered email address"
-                isReadOnly={true}
-                customReadOnlyMessage={user ? loggedInMessage : guestMessage}
+                description="Enter the practitioner's email address"
               >
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="email"
                     name="email"
-                    placeholder="Email"
+                    placeholder="Email Address"
                     value={formData.email}
                     onChange={onChange}
-                    className={`pl-10 ${readOnlyStyles.input}`}
+                    className="pl-10"
                     required
-                    readOnly
                   />
                 </div>
               </FormFieldTooltip>
-            </div>
-            <div className="space-y-2">
+
               <FormFieldTooltip
                 title="Doctor Name"
-                description="Your full name as registered"
-                isReadOnly={true}
-                customReadOnlyMessage={user ? loggedInMessage : guestMessage}
+                description="Enter the doctor's full name"
               >
                 <div className="relative">
                   <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -80,85 +54,33 @@ export function PractitionerSection({ formData, onChange }: Props) {
                     placeholder="Doctor Name"
                     value={formData.doctorName}
                     onChange={onChange}
-                    className={`pl-10 ${readOnlyStyles.input}`}
+                    className="pl-10"
                     required
-                    readOnly
                   />
                 </div>
               </FormFieldTooltip>
-            </div>
-            <div className="space-y-2">
+
               <FormFieldTooltip
-                title="License Number"
-                description="Your medical license number"
-                isReadOnly={true}
-                customReadOnlyMessage={user ? loggedInMessage : guestMessage}
+                title="NPI Number"
+                description="Enter the National Provider Identifier (NPI) number"
               >
                 <div className="relative">
-                  <BadgeCheck className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Hash className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="text"
-                    name="licenseNumber"
-                    placeholder="License Number"
-                    value={formData.licenseNumber}
+                    name="npiNumber"
+                    placeholder="NPI Number"
+                    value={formData.npiNumber}
                     onChange={onChange}
-                    className={`pl-10 ${readOnlyStyles.input}`}
+                    className="pl-10"
                     required
-                    readOnly
                   />
                 </div>
               </FormFieldTooltip>
-            </div>
-            <div className="space-y-2">
-              <FormFieldTooltip
-                title="Clinic Name"
-                description="Your registered clinic name"
-                isReadOnly={true}
-                customReadOnlyMessage={user ? loggedInMessage : guestMessage}
-              >
-                <div className="relative">
-                  <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    name="clinicName"
-                    placeholder="Clinic Name"
-                    value={formData.clinicName}
-                    onChange={onChange}
-                    className={`pl-10 ${readOnlyStyles.input}`}
-                    required
-                    readOnly
-                  />
-                </div>
-              </FormFieldTooltip>
-            </div>
-            <div className="space-y-2">
-              <FormFieldTooltip
-                title="Clinic Address"
-                description="Your clinic's registered address"
-                isReadOnly={true}
-                customReadOnlyMessage={user ? loggedInMessage : guestMessage}
-              >
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    name="clinicAddress"
-                    placeholder="Clinic Address"
-                    value={formData.clinicAddress}
-                    onChange={onChange}
-                    className={`pl-10 ${readOnlyStyles.input}`}
-                    required
-                    readOnly
-                  />
-                </div>
-              </FormFieldTooltip>
-            </div>
-            <div className="space-y-2">
+
               <FormFieldTooltip
                 title="Clinic Phone"
-                description="Your clinic's contact number"
-                isReadOnly={true}
-                customReadOnlyMessage={user ? loggedInMessage : guestMessage}
+                description="Enter the clinic's phone number"
               >
                 <div className="relative">
                   <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -168,9 +90,82 @@ export function PractitionerSection({ formData, onChange }: Props) {
                     placeholder="Clinic Phone"
                     value={formData.clinicPhone}
                     onChange={onChange}
-                    className={`pl-10 ${readOnlyStyles.input}`}
+                    className="pl-10"
                     required
-                    readOnly
+                  />
+                </div>
+              </FormFieldTooltip>
+            </div>
+
+            <div className="space-y-2">
+              <FormFieldTooltip
+                title="Clinic Name"
+                description="Enter the clinic or practice name"
+              >
+                <div className="relative">
+                  <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    name="clinicName"
+                    placeholder="Clinic Name"
+                    value={formData.clinicName}
+                    onChange={onChange}
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </FormFieldTooltip>
+
+              <FormFieldTooltip
+                title="Clinic Address"
+                description="Enter the clinic's full address"
+              >
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    name="clinicAddress"
+                    placeholder="Clinic Address"
+                    value={formData.clinicAddress}
+                    onChange={onChange}
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </FormFieldTooltip>
+
+              <FormFieldTooltip
+                title="DEA Number"
+                description="Enter the Drug Enforcement Administration (DEA) number"
+              >
+                <div className="relative">
+                  <FileText className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    name="deaNumber"
+                    placeholder="DEA Number"
+                    value={formData.deaNumber}
+                    onChange={onChange}
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </FormFieldTooltip>
+
+              <FormFieldTooltip
+                title="Clinic Fax"
+                description="Enter the clinic's fax number"
+              >
+                <div className="relative">
+                  <Printer className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="tel"
+                    name="clinicFax"
+                    placeholder="Clinic Fax"
+                    value={formData.clinicFax}
+                    onChange={onChange}
+                    className="pl-10"
+                    required
                   />
                 </div>
               </FormFieldTooltip>
