@@ -1,7 +1,7 @@
 import React from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, User, FileText, LogOut } from 'lucide-react';
+import { LayoutDashboard, User, FileText, LogOut, ExternalLink } from 'lucide-react';
 import { Button } from '../ui/button';
 
 interface Props {
@@ -68,7 +68,17 @@ export function AdminLayout({ children }: Props) {
                 </Link>
               </div>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center gap-3">
+              <Link to="/">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-gray-500 hover:text-gray-700 flex items-center gap-2"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Visit Frontend
+                </Button>
+              </Link>
               <Button
                 variant="ghost"
                 size="sm"

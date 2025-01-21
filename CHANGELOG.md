@@ -35,6 +35,10 @@ All notable changes to this project will be documented in this file.
 - Added sign-up call-to-action in tooltip messages for guest users
 - Added dialog-based authentication with modal forms
 - Integrated sign-in and sign-up forms into the main page header
+- Added quick access to frontend from admin area
+  - Added "Visit Frontend" button in admin navigation
+  - Used ExternalLink icon for better visual indication
+  - Maintained consistent button styling
 
 ### Authentication & User Management
 - Created login and signup forms with email/password
