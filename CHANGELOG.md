@@ -36,7 +36,7 @@ All notable changes to this project will be documented in this file.
 - Added dialog-based authentication with modal forms
 - Integrated sign-in and sign-up forms into the main page header
 - Added quick access to frontend from admin area
-  - Added "Visit Frontend" button in admin navigation
+  - Added "Prescription Platform" button in admin navigation
   - Used ExternalLink icon for better visual indication
   - Maintained consistent button styling
 

@@ -76,7 +76,7 @@ export function AdminLayout({ children }: Props) {
                   className="text-gray-500 hover:text-gray-700 flex items-center gap-2"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  Visit Frontend
+                  Prescription Platform
                 </Button>
               </Link>
               <Button
