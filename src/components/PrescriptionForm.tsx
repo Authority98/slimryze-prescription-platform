@@ -46,16 +46,16 @@ const initialFormData: FormData = {
 
 export default function PrescriptionForm() {
   const [formData, setFormData] = useState<FormData>(initialFormData);
-  const [loading, setLoading] = useState(true);
+  const [formLoading, setFormLoading] = useState(true);
   const navigate = useNavigate();
   const formRef = useRef<HTMLDivElement>(null);
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
   useEffect(() => {
     if (user) {
       loadPractitionerData();
     } else {
-      setLoading(false);
+      setFormLoading(false);
     }
   }, [user]);
 
@@ -78,19 +78,19 @@ export default function PrescriptionForm() {
     } catch (error) {
       console.error('Error loading practitioner data:', error);
     } finally {
-      setLoading(false);
+      setFormLoading(false);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setFormLoading(true);
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       console.log('Form submitted:', formData);
     } finally {
-      setLoading(false);
+      setFormLoading(false);
     }
   };
 
@@ -145,7 +145,7 @@ export default function PrescriptionForm() {
     }
   };
 
-  if (loading) {
+  if (authLoading || formLoading) {
     return <LoadingPage />;
   }
 
@@ -173,7 +173,7 @@ export default function PrescriptionForm() {
               <div className="w-full p-8 space-y-6 bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-6">
-                    <PractitionerSection formData={formData} onChange={handleChange} />
+                    <PractitionerSection formData={formData} onChange={handleChange} isReadOnly={!user} />
                     <PatientSection formData={formData} onChange={handleChange} isReadOnly={!user} />
                     <PrescriptionSection formData={formData} onChange={handleChange} isReadOnly={!user} />
                     <IngredientsSection formData={formData} isReadOnly={!user} />

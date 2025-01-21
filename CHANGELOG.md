@@ -101,6 +101,8 @@ All notable changes to this project will be documented in this file.
   - Added Clinic Fax field
   - Improved field organization with two-column layout
   - Updated icons for better visual representation (MapPin for location)
+  - Added read-only state with tooltips and styling
+  - Fixed loading animation synchronization
 - Updated Practitioner Profile in admin area to match frontend fields:
   - Added NPI Number field (renamed from License Number)
   - Added DEA Number field

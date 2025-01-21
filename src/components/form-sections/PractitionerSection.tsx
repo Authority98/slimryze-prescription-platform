@@ -5,13 +5,17 @@ import { Input } from "../ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { TooltipProvider } from "../ui/tooltip";
 import { FormFieldTooltip } from '../ui/form-field-tooltip';
+import { cn } from "../../lib/utils";
 
 interface Props {
   formData: FormData;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isReadOnly?: boolean;
 }
 
-export function PractitionerSection({ formData, onChange }: Props) {
+export function PractitionerSection({ formData, onChange, isReadOnly = false }: Props) {
+  const tooltipMessage = isReadOnly ? "Please sign in to edit this field." : undefined;
+
   return (
     <TooltipProvider>
       <Card>
@@ -26,7 +30,7 @@ export function PractitionerSection({ formData, onChange }: Props) {
             <div className="space-y-2">
               <FormFieldTooltip
                 title="Email"
-                description="Enter the practitioner's email address"
+                description={tooltipMessage || "Enter the practitioner's email address"}
               >
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -36,15 +40,19 @@ export function PractitionerSection({ formData, onChange }: Props) {
                     placeholder="Email Address"
                     value={formData.email}
                     onChange={onChange}
-                    className="pl-10"
+                    className={cn(
+                      "pl-10",
+                      isReadOnly && "bg-muted"
+                    )}
                     required
+                    readOnly={isReadOnly}
                   />
                 </div>
               </FormFieldTooltip>
 
               <FormFieldTooltip
                 title="Doctor Name"
-                description="Enter the doctor's full name"
+                description={tooltipMessage || "Enter the doctor's full name"}
               >
                 <div className="relative">
                   <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -54,15 +62,19 @@ export function PractitionerSection({ formData, onChange }: Props) {
                     placeholder="Doctor Name"
                     value={formData.doctorName}
                     onChange={onChange}
-                    className="pl-10"
+                    className={cn(
+                      "pl-10",
+                      isReadOnly && "bg-muted"
+                    )}
                     required
+                    readOnly={isReadOnly}
                   />
                 </div>
               </FormFieldTooltip>
 
               <FormFieldTooltip
                 title="NPI Number"
-                description="Enter the National Provider Identifier (NPI) number"
+                description={tooltipMessage || "Enter the National Provider Identifier (NPI) number"}
               >
                 <div className="relative">
                   <Hash className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -72,15 +84,19 @@ export function PractitionerSection({ formData, onChange }: Props) {
                     placeholder="NPI Number"
                     value={formData.npiNumber}
                     onChange={onChange}
-                    className="pl-10"
+                    className={cn(
+                      "pl-10",
+                      isReadOnly && "bg-muted"
+                    )}
                     required
+                    readOnly={isReadOnly}
                   />
                 </div>
               </FormFieldTooltip>
 
               <FormFieldTooltip
                 title="Clinic Phone"
-                description="Enter the clinic's phone number"
+                description={tooltipMessage || "Enter the clinic's phone number"}
               >
                 <div className="relative">
                   <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -90,8 +106,12 @@ export function PractitionerSection({ formData, onChange }: Props) {
                     placeholder="Clinic Phone"
                     value={formData.clinicPhone}
                     onChange={onChange}
-                    className="pl-10"
+                    className={cn(
+                      "pl-10",
+                      isReadOnly && "bg-muted"
+                    )}
                     required
+                    readOnly={isReadOnly}
                   />
                 </div>
               </FormFieldTooltip>
@@ -100,7 +120,7 @@ export function PractitionerSection({ formData, onChange }: Props) {
             <div className="space-y-2">
               <FormFieldTooltip
                 title="Clinic Name"
-                description="Enter the clinic or practice name"
+                description={tooltipMessage || "Enter the clinic or practice name"}
               >
                 <div className="relative">
                   <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -110,15 +130,19 @@ export function PractitionerSection({ formData, onChange }: Props) {
                     placeholder="Clinic Name"
                     value={formData.clinicName}
                     onChange={onChange}
-                    className="pl-10"
+                    className={cn(
+                      "pl-10",
+                      isReadOnly && "bg-muted"
+                    )}
                     required
+                    readOnly={isReadOnly}
                   />
                 </div>
               </FormFieldTooltip>
 
               <FormFieldTooltip
                 title="Clinic Address"
-                description="Enter the clinic's full address"
+                description={tooltipMessage || "Enter the clinic's full address"}
               >
                 <div className="relative">
                   <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -128,15 +152,19 @@ export function PractitionerSection({ formData, onChange }: Props) {
                     placeholder="Clinic Address"
                     value={formData.clinicAddress}
                     onChange={onChange}
-                    className="pl-10"
+                    className={cn(
+                      "pl-10",
+                      isReadOnly && "bg-muted"
+                    )}
                     required
+                    readOnly={isReadOnly}
                   />
                 </div>
               </FormFieldTooltip>
 
               <FormFieldTooltip
                 title="DEA Number"
-                description="Enter the Drug Enforcement Administration (DEA) number"
+                description={tooltipMessage || "Enter the Drug Enforcement Administration (DEA) number"}
               >
                 <div className="relative">
                   <FileText className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -146,15 +174,19 @@ export function PractitionerSection({ formData, onChange }: Props) {
                     placeholder="DEA Number"
                     value={formData.deaNumber}
                     onChange={onChange}
-                    className="pl-10"
+                    className={cn(
+                      "pl-10",
+                      isReadOnly && "bg-muted"
+                    )}
                     required
+                    readOnly={isReadOnly}
                   />
                 </div>
               </FormFieldTooltip>
 
               <FormFieldTooltip
                 title="Clinic Fax"
-                description="Enter the clinic's fax number"
+                description={tooltipMessage || "Enter the clinic's fax number"}
               >
                 <div className="relative">
                   <Printer className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -164,8 +196,12 @@ export function PractitionerSection({ formData, onChange }: Props) {
                     placeholder="Clinic Fax"
                     value={formData.clinicFax}
                     onChange={onChange}
-                    className="pl-10"
+                    className={cn(
+                      "pl-10",
+                      isReadOnly && "bg-muted"
+                    )}
                     required
+                    readOnly={isReadOnly}
                   />
                 </div>
               </FormFieldTooltip>
