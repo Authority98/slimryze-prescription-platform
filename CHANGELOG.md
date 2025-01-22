@@ -39,6 +39,13 @@ All notable changes to this project will be documented in this file.
   - Added "Prescription Platform" button in admin navigation
   - Used ExternalLink icon for better visual indication
   - Maintained consistent button styling
+- Added database schema migrations for new columns
+  - Added ingredients column to prescriptions table
+  - Added patient information columns (email, phone, address, gender)
+- Added print preview improvements
+  - Direct print functionality without new window
+  - Consistent layout between screen and print
+  - Print-specific styling for better readability
 
 ### Authentication & User Management
 - Created login and signup forms with email/password
@@ -67,6 +74,19 @@ All notable changes to this project will be documented in this file.
   - Removed decorative elements from print view
   - Added subtle borders for better section separation
   - Improved overall print layout consistency
+  - Implemented direct print dialog without new window
+  - Added print-specific styles for form sections
+  - Enhanced signature section visibility in print
+
+### Database Improvements
+- Added new columns to prescriptions table
+  - ingredients: TEXT column for storing prescription ingredients
+  - patient_email: TEXT column for patient email
+  - patient_phone: TEXT column for patient phone
+  - patient_address: TEXT column for patient address
+  - patient_gender: TEXT column for patient gender
+- Implemented database migrations using Supabase CLI
+- Added proper error handling for database operations
 
 ### UI/UX Improvements
 - Added gradient backgrounds and decorative elements
