@@ -1,0 +1,5 @@
+ALTER TABLE prescriptions
+ADD COLUMN IF NOT EXISTS patient_email TEXT,
+ADD COLUMN IF NOT EXISTS patient_phone TEXT,
+ADD COLUMN IF NOT EXISTS patient_address TEXT,
+ADD COLUMN IF NOT EXISTS patient_gender TEXT;

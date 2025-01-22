@@ -50,6 +50,24 @@ All notable changes to this project will be documented in this file.
 - Added automatic email field population from Supabase user data
 - Added sign out button in prescription form header
 
+### Print Functionality Improvements
+- Enhanced print styling for better consistency with UI
+  - Fixed electronic signature text visibility in print view
+  - Improved grid layout preservation in print
+  - Added proper spacing and borders for printed cards
+  - Ensured icons and text are properly aligned
+  - Fixed text colors and visibility for all elements
+  - Maintained proper padding and margins in print
+  - Added specific print styles for signature section text
+  - Improved table styling for ingredients section
+  - Enhanced form field visibility in print preview
+  - Fixed icon alignment and sizing in print view
+  - Added proper spacing between sections in print
+  - Ensured consistent typography in printed output
+  - Removed decorative elements from print view
+  - Added subtle borders for better section separation
+  - Improved overall print layout consistency
+
 ### UI/UX Improvements
 - Added gradient backgrounds and decorative elements
 - Implemented consistent card-based layout

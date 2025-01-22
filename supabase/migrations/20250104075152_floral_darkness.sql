@@ -17,10 +17,15 @@
       - `practitioner_id` (uuid, foreign key)
       - `patient_name` (text)
       - `patient_dob` (date)
+      - `patient_email` (text)
+      - `patient_phone` (text)
+      - `patient_address` (text)
+      - `patient_gender` (text)
       - `dosage` (text)
       - `quantity` (integer)
       - `refills` (integer)
       - `instructions` (text)
+      - `ingredients` (text)
       - `signature` (text)
       - `created_at` (timestamp)
       - `status` (text)
@@ -49,10 +54,15 @@ CREATE TABLE prescriptions (
   practitioner_id UUID NOT NULL REFERENCES practitioners(id),
   patient_name TEXT NOT NULL,
   patient_dob DATE NOT NULL,
+  patient_email TEXT,
+  patient_phone TEXT,
+  patient_address TEXT,
+  patient_gender TEXT,
   dosage TEXT NOT NULL,
   quantity INTEGER NOT NULL,
   refills INTEGER NOT NULL,
   instructions TEXT,
+  ingredients TEXT,
   signature TEXT NOT NULL,
   created_at TIMESTAMPTZ DEFAULT now(),
   status TEXT NOT NULL DEFAULT 'pending'
