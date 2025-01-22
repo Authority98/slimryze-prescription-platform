@@ -193,5 +193,15 @@ All notable changes to this project will be documented in this file.
 - Improved tooltip message organization
 - Enhanced component reusability
 
+### Component Improvements
+- Created reusable `PrescriptionDetailsDialog` component for consistent prescription viewing experience
+- Implemented the dialog component in both Prescription History and Dashboard
+- Enhanced prescription details view with:
+  - Organized sections for Patient Information, Prescription Details, and Authorization
+  - Improved print layout and styling
+  - Added print button for easy prescription printing
+- Maintained original dashboard layout while adding prescription details functionality
+- Added view button to Recent Prescriptions section in dashboard
+
 ## [0.1.0] - 2024-03-17
 - Initial release with core functionality 

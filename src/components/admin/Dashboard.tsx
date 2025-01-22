@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { LoadingPage } from "../ui/loading";
-import { ClipboardList, User, FileText, Plus, ArrowRight } from "lucide-react";
+import { ClipboardList, User, FileText, Plus, ArrowRight, Eye } from "lucide-react";
+import { PrescriptionDetailsDialog } from './PrescriptionDetailsDialog';
 
 interface DashboardStats {
   totalPrescriptions: number;
@@ -16,13 +17,14 @@ interface DashboardStats {
 }
 
 export function Dashboard() {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<DashboardStats>({
     totalPrescriptions: 0,
     recentPrescriptions: [],
-    userData: null,
+    userData: null
   });
+  const [loading, setLoading] = useState(true);
+  const [selectedPrescription, setSelectedPrescription] = useState<any>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchDashboardData();
@@ -31,22 +33,33 @@ export function Dashboard() {
   const fetchDashboardData = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Not authenticated');
+      if (!user) return;
 
       // Fetch user data
-      const userData = {
-        full_name: user.user_metadata.full_name || '',
-        clinic_name: user.user_metadata.clinic_name || '',
-      };
+      const { data: userData } = await supabase
+        .from('practitioners')
+        .select('full_name, clinic_name')
+        .eq('id', user.id)
+        .single();
 
-      // TODO: Fetch actual prescription data when available
-      const totalPrescriptions = 0;
-      const recentPrescriptions = [];
+      // Fetch total prescriptions count
+      const { count: totalPrescriptions } = await supabase
+        .from('prescriptions')
+        .select('*', { count: 'exact', head: true })
+        .eq('practitioner_id', user.id);
+
+      // Fetch 5 most recent prescriptions
+      const { data: recentPrescriptions } = await supabase
+        .from('prescriptions')
+        .select('*')
+        .eq('practitioner_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(5);
 
       setStats({
-        totalPrescriptions,
-        recentPrescriptions,
-        userData,
+        totalPrescriptions: totalPrescriptions || 0,
+        recentPrescriptions: recentPrescriptions || [],
+        userData
       });
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -131,13 +144,12 @@ export function Dashboard() {
               variant="outline"
               size="sm"
               className="flex items-center gap-2"
-              onClick={() => navigate('/admin/prescriptions')}
+              onClick={() => navigate('/')}
             >
               <Plus className="h-4 w-4" />
               New Prescription
             </Button>
           </div>
-          <CardDescription>Your recently created prescriptions</CardDescription>
         </CardHeader>
         <CardContent>
           {stats.recentPrescriptions.length === 0 ? (
@@ -146,18 +158,52 @@ export function Dashboard() {
               <Button
                 variant="link"
                 className="mt-2 text-purple-600"
-                onClick={() => navigate('/admin/prescriptions')}
+                onClick={() => navigate('/')}
               >
                 Create your first prescription
               </Button>
             </div>
           ) : (
             <div className="space-y-4">
-              {/* TODO: Add prescription list when available */}
+              {stats.recentPrescriptions.map((prescription) => (
+                <div
+                  key={prescription.id}
+                  className="flex items-center justify-between p-4 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-start gap-3">
+                    <User className="w-5 h-5 text-gray-400 mt-1" />
+                    <div>
+                      <div className="font-medium">{prescription.patient_name}</div>
+                      <div className="text-sm text-gray-500">
+                        {new Date(prescription.created_at).toLocaleDateString()}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="text-sm text-gray-500">
+                      {prescription.dosage}
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-purple-600 hover:text-purple-700"
+                      onClick={() => setSelectedPrescription(prescription)}
+                    >
+                      <Eye className="w-4 h-4 mr-1" />
+                      View
+                    </Button>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </CardContent>
       </Card>
+
+      <PrescriptionDetailsDialog
+        prescription={selectedPrescription}
+        onClose={() => setSelectedPrescription(null)}
+      />
     </div>
   );
 } 
