@@ -144,10 +144,10 @@ export function Dashboard() {
               variant="outline"
               size="sm"
               className="flex items-center gap-2"
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/admin/prescriptions')}
             >
               <Plus className="h-4 w-4" />
-              New Prescription
+              View All
             </Button>
           </div>
         </CardHeader>

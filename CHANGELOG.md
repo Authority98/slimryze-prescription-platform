@@ -203,5 +203,15 @@ All notable changes to this project will be documented in this file.
 - Maintained original dashboard layout while adding prescription details functionality
 - Added view button to Recent Prescriptions section in dashboard
 
+### UI/UX Improvements (2024-03-17)
+- Enhanced admin header navigation:
+  - Renamed "Prescription Platform" button to "Create New Prescription" with improved styling
+  - Added gradient background and hover effects to the create prescription button
+  - Fixed text color consistency on hover states
+- Streamlined user menu:
+  - Removed redundant "Prescription History" option
+  - Renamed "Edit Profile" to "Edit Practitioner Profile" for clarity
+  - Maintained clean and organized dropdown structure
+
 ## [0.1.0] - 2024-03-17
 - Initial release with core functionality 

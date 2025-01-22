@@ -116,7 +116,7 @@ export function PractitionerProfile() {
         <CardHeader className="space-y-1 pb-4">
           <div className="flex items-center gap-2">
             <User className="w-5 h-5 text-purple-600" />
-            <CardTitle>Practitioner Profile</CardTitle>
+            <CardTitle>Edit Practitioner Profile</CardTitle>
           </div>
         </CardHeader>
         <CardContent>

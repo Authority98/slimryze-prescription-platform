@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, User, FileText, LogOut, ExternalLink } from 'lucide-react';
+import { LayoutDashboard, FileText, ExternalLink } from 'lucide-react';
 import { Button } from '../ui/button';
+import { UserMenu } from './UserMenu';
 
 interface Props {
   children: React.ReactNode;
@@ -11,10 +12,29 @@ interface Props {
 export function AdminLayout({ children }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
+  const [userData, setUserData] = useState<{ full_name: string; clinic_name: string } | null>(null);
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    navigate('/');
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data } = await supabase
+        .from('practitioners')
+        .select('full_name, clinic_name')
+        .eq('id', user.id)
+        .single();
+
+      if (data) {
+        setUserData(data);
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
   };
 
   const isActive = (path: string) => {
@@ -45,17 +65,6 @@ export function AdminLayout({ children }: Props) {
                   Dashboard
                 </Link>
                 <Link
-                  to="/admin/profile"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    isActive('/admin/profile')
-                      ? 'border-purple-600 text-gray-900'
-                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                  }`}
-                >
-                  <User className="w-4 h-4 mr-2" />
-                  Profile
-                </Link>
-                <Link
                   to="/admin/prescriptions"
                   className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
                     isActive('/admin/prescriptions')
@@ -64,7 +73,7 @@ export function AdminLayout({ children }: Props) {
                   }`}
                 >
                   <FileText className="w-4 h-4 mr-2" />
-                  Prescriptions
+                  Prescription History
                 </Link>
               </div>
             </div>
@@ -73,21 +82,18 @@ export function AdminLayout({ children }: Props) {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="text-gray-500 hover:text-gray-700 flex items-center gap-2"
+                  className="relative bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 hover:scale-[1.02] flex items-center gap-2 px-4 py-2"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  Prescription Platform
+                  Create New Prescription
                 </Button>
               </Link>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleSignOut}
-                className="text-gray-500 hover:text-gray-700 flex items-center gap-2"
-              >
-                <LogOut className="w-4 h-4" />
-                Sign Out
-              </Button>
+              {userData && (
+                <UserMenu
+                  userName={userData.full_name}
+                  clinicName={userData.clinic_name}
+                />
+              )}
             </div>
           </div>
         </div>
