@@ -33,24 +33,18 @@ export function SignUpForm({ onSuccess }: Props) {
     setError('');
 
     try {
-      const { error: signUpError } = await supabase.auth.signUp({
+      const { data, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        options: {
+          data: {
+            full_name: formData.doctorName,
+            clinic_name: '' // Initialize with empty string
+          }
+        }
       });
 
       if (signUpError) throw signUpError;
-
-      const { error: profileError } = await supabase
-        .from('practitioners')
-        .insert([
-          {
-            user_id: (await supabase.auth.getUser()).data.user?.id,
-            doctor_name: formData.doctorName,
-            email: formData.email,
-          },
-        ]);
-
-      if (profileError) throw profileError;
       
       if (onSuccess) {
         onSuccess();

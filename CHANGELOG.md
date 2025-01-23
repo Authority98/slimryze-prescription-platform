@@ -276,6 +276,7 @@ All notable changes to this project will be documented in this file.
 - Fixed UserMenu not appearing after login by correctly fetching user metadata from auth.users
 - Updated PrivateRoute to redirect to home page instead of non-existent /admin/login route
 - Improved user authentication flow and data fetching in AdminLayout
+- Fixed user metadata storage during signup to properly store full_name and clinic_name
 
 ### Security
 - Added Row Level Security (RLS) policy for prescription deletion
