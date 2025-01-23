@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabaseClient';
+import React from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, FileText, ExternalLink, Users } from 'lucide-react';
 import { Button } from '../ui/button';
@@ -12,25 +11,6 @@ interface Props {
 export function AdminLayout({ children }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [userData, setUserData] = useState<{ full_name: string; clinic_name: string } | null>(null);
-
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
-  const fetchUserData = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      setUserData({
-        full_name: user.user_metadata.full_name || '',
-        clinic_name: user.user_metadata.clinic_name || ''
-      });
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -94,12 +74,7 @@ export function AdminLayout({ children }: Props) {
                   Create New Prescription
                 </Button>
               </Link>
-              {userData && (
-                <UserMenu
-                  userName={userData.full_name}
-                  clinicName={userData.clinic_name}
-                />
-              )}
+              <UserMenu />
             </div>
           </div>
         </div>

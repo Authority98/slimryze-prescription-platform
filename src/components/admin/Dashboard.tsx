@@ -6,49 +6,39 @@ import { Button } from "../ui/button";
 import { LoadingPage } from "../ui/loading";
 import { ClipboardList, User, FileText, Plus, ArrowRight, Eye } from "lucide-react";
 import { PrescriptionDetailsDialog } from './PrescriptionDetailsDialog';
+import { useUserMetadata } from '../auth/UserMetadataContext';
 
 interface DashboardStats {
   totalPrescriptions: number;
   recentPrescriptions: any[];
-  userData: {
-    full_name: string;
-    clinic_name: string;
-  } | null;
 }
 
 export function Dashboard() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<DashboardStats>({
     totalPrescriptions: 0,
     recentPrescriptions: [],
-    userData: null
   });
-  const [loading, setLoading] = useState(true);
   const [selectedPrescription, setSelectedPrescription] = useState<any>(null);
-  const navigate = useNavigate();
+  const { metadata } = useUserMetadata();
 
   useEffect(() => {
-    fetchDashboardData();
+    fetchDashboardStats();
   }, []);
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardStats = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      // Fetch user data
-      const { data: userData } = await supabase
-        .from('practitioners')
-        .select('full_name, clinic_name')
-        .eq('id', user.id)
-        .single();
-
-      // Fetch total prescriptions count
-      const { count: totalPrescriptions } = await supabase
+      // Get total prescriptions
+      const { count } = await supabase
         .from('prescriptions')
         .select('*', { count: 'exact', head: true })
         .eq('practitioner_id', user.id);
 
-      // Fetch 5 most recent prescriptions
+      // Get recent prescriptions
       const { data: recentPrescriptions } = await supabase
         .from('prescriptions')
         .select('*')
@@ -57,12 +47,11 @@ export function Dashboard() {
         .limit(5);
 
       setStats({
-        totalPrescriptions: totalPrescriptions || 0,
+        totalPrescriptions: count || 0,
         recentPrescriptions: recentPrescriptions || [],
-        userData
       });
     } catch (error) {
-      console.error('Error fetching dashboard data:', error);
+      console.error('Error fetching dashboard stats:', error);
     } finally {
       setLoading(false);
     }
@@ -78,8 +67,8 @@ export function Dashboard() {
       <Card className="border-0 bg-gradient-to-r from-purple-600 to-blue-600">
         <CardContent className="pt-6">
           <div className="text-white">
-            <h1 className="text-2xl font-bold">Welcome back, {stats.userData?.full_name}</h1>
-            <p className="text-purple-100 mt-1">{stats.userData?.clinic_name}</p>
+            <h1 className="text-2xl font-bold">Welcome back, {metadata.full_name}</h1>
+            <p className="text-purple-100 mt-1">{metadata.clinic_name}</p>
           </div>
         </CardContent>
       </Card>
@@ -163,7 +152,7 @@ export function Dashboard() {
                 Create your first prescription
               </Button>
             </div>
-          ) : (
+          ) :
             <div className="space-y-4">
               {stats.recentPrescriptions.map((prescription) => (
                 <div
@@ -196,7 +185,7 @@ export function Dashboard() {
                 </div>
               ))}
             </div>
-          )}
+          }
         </CardContent>
       </Card>
 

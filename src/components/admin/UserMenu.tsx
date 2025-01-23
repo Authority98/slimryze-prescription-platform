@@ -9,14 +9,11 @@ import {
   ChevronDown, 
   Building2
 } from 'lucide-react';
+import { useUserMetadata } from '../auth/UserMetadataContext';
 
-interface Props {
-  userName: string;
-  clinicName: string;
-}
-
-export function UserMenu({ userName, clinicName }: Props) {
+export function UserMenu() {
   const navigate = useNavigate();
+  const { metadata } = useUserMetadata();
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -39,10 +36,10 @@ export function UserMenu({ userName, clinicName }: Props) {
               <div className="absolute -bottom-1 -right-1 bg-green-500 h-2.5 w-2.5 rounded-full border-2 border-white" />
             </div>
             <div className="text-left">
-              <p className="font-semibold text-gray-800">{userName}</p>
+              <p className="font-semibold text-gray-800">{metadata.full_name}</p>
               <div className="flex items-center gap-1.5 text-sm text-gray-500">
                 <Building2 className="h-3 w-3" />
-                <span>{clinicName}</span>
+                <span>{metadata.clinic_name || 'Set up your clinic'}</span>
               </div>
             </div>
             <ChevronDown className="h-4 w-4 text-gray-400 ml-1 transition-transform duration-200 group-hover:rotate-180" />

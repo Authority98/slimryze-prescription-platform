@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { User, Hash, Building2, MapPin, Phone, Mail, FileText, Printer } from "lucide-react";
 import { LoadingPage } from "../ui/loading";
 import { Alert, AlertDescription } from "../ui/alert";
+import { useUserMetadata } from '../auth/UserMetadataContext';
 
 interface FormData {
   email: string;
@@ -22,6 +23,7 @@ export function PractitionerProfile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const { metadata, updateMetadata } = useUserMetadata();
   const [formData, setFormData] = useState<FormData>({
     email: '',
     full_name: '',
@@ -77,20 +79,16 @@ export function PractitionerProfile() {
     setSuccess(null);
 
     try {
-      const { error } = await supabase.auth.updateUser({
-        email: formData.email,
-        data: {
-          full_name: formData.full_name,
-          npi_number: formData.npi_number,
-          dea_number: formData.dea_number,
-          clinic_name: formData.clinic_name,
-          clinic_address: formData.clinic_address,
-          clinic_phone: formData.clinic_phone,
-          clinic_fax: formData.clinic_fax,
-        }
+      await updateMetadata({
+        full_name: formData.full_name,
+        npi_number: formData.npi_number,
+        dea_number: formData.dea_number,
+        clinic_name: formData.clinic_name,
+        clinic_address: formData.clinic_address,
+        clinic_phone: formData.clinic_phone,
+        clinic_fax: formData.clinic_fax,
       });
 
-      if (error) throw error;
       setSuccess('Profile updated successfully!');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Error updating profile');
@@ -167,20 +165,18 @@ export function PractitionerProfile() {
                     placeholder="NPI Number"
                     value={formData.npi_number}
                     onChange={handleChange}
-                    required
                     className="pl-10"
                   />
                 </div>
 
                 <div className="relative">
-                  <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Hash className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
-                    type="tel"
-                    name="clinic_phone"
-                    placeholder="Clinic Phone"
-                    value={formData.clinic_phone}
+                    type="text"
+                    name="dea_number"
+                    placeholder="DEA Number"
+                    value={formData.dea_number}
                     onChange={handleChange}
-                    required
                     className="pl-10"
                   />
                 </div>
@@ -195,7 +191,6 @@ export function PractitionerProfile() {
                     placeholder="Clinic Name"
                     value={formData.clinic_name}
                     onChange={handleChange}
-                    required
                     className="pl-10"
                   />
                 </div>
@@ -208,20 +203,18 @@ export function PractitionerProfile() {
                     placeholder="Clinic Address"
                     value={formData.clinic_address}
                     onChange={handleChange}
-                    required
                     className="pl-10"
                   />
                 </div>
 
                 <div className="relative">
-                  <FileText className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="text"
-                    name="dea_number"
-                    placeholder="DEA Number"
-                    value={formData.dea_number}
+                    name="clinic_phone"
+                    placeholder="Clinic Phone"
+                    value={formData.clinic_phone}
                     onChange={handleChange}
-                    required
                     className="pl-10"
                   />
                 </div>
@@ -229,12 +222,11 @@ export function PractitionerProfile() {
                 <div className="relative">
                   <Printer className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
-                    type="tel"
+                    type="text"
                     name="clinic_fax"
                     placeholder="Clinic Fax"
                     value={formData.clinic_fax}
                     onChange={handleChange}
-                    required
                     className="pl-10"
                   />
                 </div>
@@ -246,7 +238,7 @@ export function PractitionerProfile() {
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
               disabled={loading}
             >
-              {loading ? 'Saving...' : 'Save Profile'}
+              {loading ? 'Updating...' : 'Update Profile'}
             </Button>
           </form>
         </CardContent>
