@@ -464,9 +464,9 @@ export function LandingPage() {
               </div>
             </div>
             <div className="flex items-center gap-6 text-gray-600">
-              <a href="/privacy" className="hover:text-purple-600 transition-colors">Privacy Policy</a>
-              <a href="/terms" className="hover:text-purple-600 transition-colors">Terms of Service</a>
-              <a href="/contact" className="hover:text-purple-600 transition-colors">Contact</a>
+              <button className="hover:text-purple-600 transition-colors">Privacy Policy</button>
+              <button className="hover:text-purple-600 transition-colors">Terms of Service</button>
+              <button className="hover:text-purple-600 transition-colors">Contact</button>
             </div>
           </div>
           <div className="mt-8 text-center text-gray-500 text-sm">
