@@ -23,15 +23,10 @@ export function AdminLayout({ children }: Props) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data } = await supabase
-        .from('practitioners')
-        .select('full_name, clinic_name')
-        .eq('id', user.id)
-        .single();
-
-      if (data) {
-        setUserData(data);
-      }
+      setUserData({
+        full_name: user.user_metadata.full_name || '',
+        clinic_name: user.user_metadata.clinic_name || ''
+      });
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
