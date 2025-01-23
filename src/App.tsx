@@ -7,6 +7,7 @@ import { PatientList } from './components/admin/PatientList';
 import { AdminLayout } from './components/admin/AdminLayout';
 import { Dashboard } from './components/admin/Dashboard';
 import PrescriptionForm from './components/PrescriptionForm';
+import { LandingPage } from './components/landing/LandingPage';
 import { PrivateRoute } from './components/auth/PrivateRoute';
 import { Toaster } from './components/ui/toaster';
 
@@ -15,7 +16,8 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<PrescriptionForm />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/prescription" element={<PrescriptionForm />} />
           <Route
             path="/admin"
             element={
