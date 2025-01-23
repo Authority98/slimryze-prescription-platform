@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, FileText, ExternalLink } from 'lucide-react';
+import { LayoutDashboard, FileText, ExternalLink, Users } from 'lucide-react';
 import { Button } from '../ui/button';
 import { UserMenu } from './UserMenu';
 
@@ -74,6 +74,17 @@ export function AdminLayout({ children }: Props) {
                 >
                   <FileText className="w-4 h-4 mr-2" />
                   Prescription History
+                </Link>
+                <Link
+                  to="/admin/patients"
+                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                    isActive('/admin/patients')
+                      ? 'border-purple-600 text-gray-900'
+                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                  }`}
+                >
+                  <Users className="w-4 h-4 mr-2" />
+                  Patients
                 </Link>
               </div>
             </div>

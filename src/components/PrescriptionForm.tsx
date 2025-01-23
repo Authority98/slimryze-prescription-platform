@@ -13,6 +13,7 @@ import { FormData } from '../types/form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './auth/AuthContext';
 import { TooltipProvider } from './ui/tooltip';
+import { useToast } from './ui/use-toast';
 
 interface PrescriptionData {
   practitioner_id: string;
@@ -27,7 +28,6 @@ interface PrescriptionData {
   refills: number;
   instructions: string;
   signature: string;
-  status: string;
   ingredients?: string;
 }
 
@@ -67,6 +67,7 @@ export default function PrescriptionForm() {
   const navigate = useNavigate();
   const formRef = useRef<HTMLDivElement>(null);
   const { user, loading: authLoading } = useAuth();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (user) {
@@ -127,6 +128,11 @@ export default function PrescriptionForm() {
 
         if (insertError) {
           console.error('Error creating practitioner:', insertError);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to create practitioner profile. Please try again.",
+          });
           throw new Error('Failed to create practitioner profile. Please try again.');
         }
       }
@@ -144,8 +150,7 @@ export default function PrescriptionForm() {
         quantity: parseInt(formData.quantity),
         refills: parseInt(formData.refills),
         instructions: formData.instructions,
-        signature: formData.signature,
-        status: 'pending'
+        signature: formData.signature
       };
 
       // Only add ingredients if it exists
@@ -161,8 +166,19 @@ export default function PrescriptionForm() {
 
       if (error) {
         console.error('Supabase error:', error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to submit prescription. Please try again.",
+        });
         throw error;
       }
+
+      // Show success toast
+      toast({
+        title: "Success",
+        description: "Prescription submitted successfully!",
+      });
 
       // Reset form on success
       handleReset();
@@ -174,7 +190,11 @@ export default function PrescriptionForm() {
         details: error?.details,
         hint: error?.hint
       });
-      alert(error?.message || 'Failed to submit prescription. Please try again.');
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error?.message || 'Failed to submit prescription. Please try again.',
+      });
     } finally {
       setFormLoading(false);
     }

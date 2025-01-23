@@ -3,9 +3,20 @@ import { supabase } from '../../lib/supabaseClient';
 import { LoadingPage } from '../ui/loading';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
-import { Plus, FileText, Calendar, User, Pill, Eye } from 'lucide-react';
+import { Plus, FileText, Calendar, User, Pill, Eye, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { PrescriptionDetailsDialog } from './PrescriptionDetailsDialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "../ui/alert-dialog";
+import { useToast } from "../ui/use-toast";
 
 interface Prescription {
   id: string;
@@ -28,7 +39,9 @@ export function PrescriptionList() {
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedPrescription, setSelectedPrescription] = useState<Prescription | null>(null);
+  const [prescriptionToDelete, setPrescriptionToDelete] = useState<Prescription | null>(null);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     loadPrescriptions();
@@ -36,6 +49,7 @@ export function PrescriptionList() {
 
   const loadPrescriptions = async () => {
     try {
+      console.log('Loading prescriptions...');
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
@@ -47,10 +61,16 @@ export function PrescriptionList() {
 
       if (error) throw error;
       if (data) {
+        console.log('Prescriptions loaded:', data.length, 'prescriptions found');
         setPrescriptions(data);
       }
     } catch (error) {
       console.error('Error loading prescriptions:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load prescriptions. Please try again.",
+      });
     } finally {
       setLoading(false);
     }
@@ -62,6 +82,86 @@ export function PrescriptionList() {
 
   const handlePrescriptionClick = (prescription: Prescription) => {
     setSelectedPrescription(prescription);
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent, prescription: Prescription) => {
+    e.stopPropagation();
+    setPrescriptionToDelete(prescription);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!prescriptionToDelete) return;
+
+    try {
+      console.log('Starting delete operation for prescription:', prescriptionToDelete.id);
+      setLoading(true);
+      
+      // First, verify the prescription exists
+      const { data: existingData, error: checkError } = await supabase
+        .from('prescriptions')
+        .select('id')
+        .eq('id', prescriptionToDelete.id)
+        .single();
+
+      if (checkError) {
+        console.error('Error checking prescription:', checkError);
+        throw checkError;
+      }
+
+      console.log('Found prescription to delete:', existingData);
+      
+      // Perform the delete operation
+      const { error: deleteError } = await supabase
+        .from('prescriptions')
+        .delete()
+        .eq('id', prescriptionToDelete.id);
+
+      if (deleteError) {
+        console.error('Error during delete:', deleteError);
+        throw deleteError;
+      }
+
+      console.log('Delete operation completed successfully');
+
+      // Verify the deletion
+      const { data: verifyData, error: verifyError } = await supabase
+        .from('prescriptions')
+        .select('id')
+        .eq('id', prescriptionToDelete.id)
+        .maybeSingle();
+
+      if (verifyError) {
+        console.error('Error verifying deletion:', verifyError);
+        throw verifyError;
+      }
+
+      if (verifyData) {
+        console.error('Prescription still exists after deletion!');
+        throw new Error('Deletion failed - prescription still exists');
+      }
+
+      console.log('Verified prescription was deleted');
+
+      // Reload prescriptions to ensure we have the latest data
+      console.log('Reloading prescriptions after delete...');
+      await loadPrescriptions();
+      setPrescriptionToDelete(null);
+
+      console.log('Delete process completed, showing success toast');
+      toast({
+        title: "Prescription Deleted",
+        description: "The prescription has been successfully deleted.",
+      });
+    } catch (error) {
+      console.error('Error in delete operation:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to delete prescription. Please try again.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading) {
@@ -163,18 +263,29 @@ export function PrescriptionList() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-purple-600 hover:text-purple-700"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handlePrescriptionClick(prescription);
-                        }}
-                      >
-                        <Eye className="w-4 h-4 mr-1" />
-                        View
-                      </Button>
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-purple-600 hover:text-purple-700"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handlePrescriptionClick(prescription);
+                          }}
+                        >
+                          <Eye className="w-4 h-4 mr-1" />
+                          View
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-red-600 hover:text-red-700"
+                          onClick={(e) => handleDeleteClick(e, prescription)}
+                        >
+                          <Trash2 className="w-4 h-4 mr-1" />
+                          Delete
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -188,6 +299,26 @@ export function PrescriptionList() {
         prescription={selectedPrescription}
         onClose={() => setSelectedPrescription(null)}
       />
+
+      <AlertDialog open={!!prescriptionToDelete} onOpenChange={() => setPrescriptionToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Prescription</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this prescription? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
-}
+} 

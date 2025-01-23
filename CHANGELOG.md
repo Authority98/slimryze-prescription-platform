@@ -46,6 +46,10 @@ All notable changes to this project will be documented in this file.
   - Direct print functionality without new window
   - Consistent layout between screen and print
   - Print-specific styling for better readability
+- Toast notifications for prescription submission success/failure
+- Toast notifications for patient deletion success/failure
+- Delete functionality for patients and their associated prescriptions
+- Patient details dialog with prescription history
 
 ### Authentication & User Management
 - Created login and signup forms with email/password
@@ -212,6 +216,21 @@ All notable changes to this project will be documented in this file.
   - Removed redundant "Prescription History" option
   - Renamed "Edit Profile" to "Edit Practitioner Profile" for clarity
   - Maintained clean and organized dropdown structure
+
+### Changed
+- Renamed "Customers" to "Patients" throughout the application for consistent medical terminology
+- Updated layout and styling of the patient list page
+- Improved error handling with descriptive toast messages
+- Simplified prescription history display by removing unnecessary status field
+
+### Fixed
+- Fixed prescription deletion functionality with proper RLS policies
+- Fixed patient list width consistency with other admin pages
+- Fixed toast notifications not appearing in the prescription form
+
+### Security
+- Added Row Level Security (RLS) policy for prescription deletion
+- Ensured practitioners can only delete their own prescriptions
 
 ## [0.1.0] - 2024-03-17
 - Initial release with core functionality 

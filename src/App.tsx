@@ -3,10 +3,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './components/auth/AuthContext';
 import { PractitionerProfile } from './components/admin/PractitionerProfile';
 import { PrescriptionList } from './components/admin/PrescriptionList';
+import { PatientList } from './components/admin/PatientList';
 import { AdminLayout } from './components/admin/AdminLayout';
 import { Dashboard } from './components/admin/Dashboard';
 import PrescriptionForm from './components/PrescriptionForm';
 import { PrivateRoute } from './components/auth/PrivateRoute';
+import { Toaster } from './components/ui/toaster';
 
 function App() {
   return (
@@ -54,7 +56,18 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/admin/patients"
+            element={
+              <PrivateRoute>
+                <AdminLayout>
+                  <PatientList />
+                </AdminLayout>
+              </PrivateRoute>
+            }
+          />
         </Routes>
+        <Toaster />
       </Router>
     </AuthProvider>
   );
