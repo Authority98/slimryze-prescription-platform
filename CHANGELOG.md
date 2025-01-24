@@ -79,6 +79,12 @@ All notable changes to this project will be documented in this file.
 - Mobile-optimized navigation with animated hamburger menu
 - Added UserMetadataContext for real-time user data updates across components
 - Implemented instant updates for UserMenu and Dashboard when profile is updated
+- Auto-fetch patient data functionality in prescription form
+  - Added automatic patient data lookup by email and phone number
+  - Implemented debounced search to optimize API calls
+  - Added visual indicators (info icons) for auto-fetch fields
+  - Added tooltips to indicate auto-fetch functionality
+  - Improved user experience with automatic form filling
 
 ### Authentication & User Management
 - Created login and signup forms with email/password
