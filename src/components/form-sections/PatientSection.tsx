@@ -9,7 +9,7 @@ import { FormFieldTooltip } from '../ui/form-field-tooltip';
 import { Button } from '../ui/button';
 import { supabase } from '../../lib/supabaseClient';
 import { useToast } from '../ui/use-toast';
-import debounce from 'lodash/debounce';
+import { debounce } from 'lodash';
 import {
   Tooltip,
   TooltipContent,
