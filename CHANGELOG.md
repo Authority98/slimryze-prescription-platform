@@ -271,6 +271,7 @@ All notable changes to this project will be documented in this file.
   - Split full name into first and last name fields
   - Improved field organization and layout
   - Enhanced data handling for split name fields
+  - Swapped clinic address field with last name for consistent layout
 - Removed date of birth field from Patient Information section
 - Improved form layout and field organization
   - Swapped clinic address field with doctor's last name in Practitioner Information

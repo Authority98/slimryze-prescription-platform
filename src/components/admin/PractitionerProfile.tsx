@@ -164,14 +164,13 @@ export function PractitionerProfile() {
                 </div>
 
                 <div className="relative">
-                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="text"
-                    name="last_name"
-                    placeholder="Last Name"
-                    value={formData.last_name}
+                    name="clinic_address"
+                    placeholder="Clinic Address"
+                    value={formData.clinic_address}
                     onChange={handleChange}
-                    required
                     className="pl-10"
                   />
                 </div>
@@ -203,13 +202,14 @@ export function PractitionerProfile() {
                 </div>
 
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="text"
-                    name="clinic_address"
-                    placeholder="Clinic Address"
-                    value={formData.clinic_address}
+                    name="last_name"
+                    placeholder="Last Name"
+                    value={formData.last_name}
                     onChange={handleChange}
+                    required
                     className="pl-10"
                   />
                 </div>
