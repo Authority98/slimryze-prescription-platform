@@ -126,6 +126,13 @@ All notable changes to this project will be documented in this file.
   - patient_gender: TEXT column for patient gender
 - Implemented database migrations using Supabase CLI
 - Added proper error handling for database operations
+- Added detailed clinic address fields to practitioners table
+  - clinic_street_address: TEXT column for clinic street address
+  - clinic_city: TEXT column for clinic city
+  - clinic_state: TEXT column for clinic state
+  - clinic_postal_code: TEXT column for clinic postal code
+  - clinic_country: TEXT column for clinic country (defaults to "United States")
+- Migrated existing clinic address data to new street address field
 
 ### UI/UX Improvements
 - Added gradient backgrounds and decorative elements
@@ -269,6 +276,7 @@ All notable changes to this project will be documented in this file.
 - Split doctor name into first and last name fields in Practitioner Information section
 - Updated Edit Practitioner Profile to match new field structure
   - Split full name into first and last name fields
+  - Added detailed clinic address fields (street, city, state, postal code, country)
   - Improved field organization and layout
   - Enhanced data handling for split name fields
   - Swapped clinic address field with last name for consistent layout

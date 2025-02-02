@@ -5,7 +5,11 @@ export interface FormData {
   npiNumber: string;
   deaNumber: string;
   clinicName: string;
-  clinicAddress: string;
+  clinicStreetAddress: string;
+  clinicCity: string;
+  clinicState: string;
+  clinicPostalCode: string;
+  clinicCountry: string;
   clinicPhone: string;
   clinicFax: string;
   patientFirstName: string;

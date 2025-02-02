@@ -15,7 +15,11 @@ interface FormData {
   npi_number: string;
   dea_number: string;
   clinic_name: string;
-  clinic_address: string;
+  clinic_street_address: string;
+  clinic_city: string;
+  clinic_state: string;
+  clinic_postal_code: string;
+  clinic_country: string;
   clinic_phone: string;
   clinic_fax: string;
 }
@@ -32,7 +36,11 @@ export function PractitionerProfile() {
     npi_number: '',
     dea_number: '',
     clinic_name: '',
-    clinic_address: '',
+    clinic_street_address: '',
+    clinic_city: '',
+    clinic_state: '',
+    clinic_postal_code: '',
+    clinic_country: 'United States',
     clinic_phone: '',
     clinic_fax: '',
   });
@@ -66,7 +74,11 @@ export function PractitionerProfile() {
           npi_number: user.user_metadata.npi_number || '',
           dea_number: user.user_metadata.dea_number || '',
           clinic_name: user.user_metadata.clinic_name || '',
-          clinic_address: user.user_metadata.clinic_address || '',
+          clinic_street_address: user.user_metadata.clinic_street_address || '',
+          clinic_city: user.user_metadata.clinic_city || '',
+          clinic_state: user.user_metadata.clinic_state || '',
+          clinic_postal_code: user.user_metadata.clinic_postal_code || '',
+          clinic_country: user.user_metadata.clinic_country || 'United States',
           clinic_phone: user.user_metadata.clinic_phone || '',
           clinic_fax: user.user_metadata.clinic_fax || '',
         });
@@ -90,7 +102,11 @@ export function PractitionerProfile() {
         npi_number: formData.npi_number,
         dea_number: formData.dea_number,
         clinic_name: formData.clinic_name,
-        clinic_address: formData.clinic_address,
+        clinic_street_address: formData.clinic_street_address,
+        clinic_city: formData.clinic_city,
+        clinic_state: formData.clinic_state,
+        clinic_postal_code: formData.clinic_postal_code,
+        clinic_country: formData.clinic_country,
         clinic_phone: formData.clinic_phone,
         clinic_fax: formData.clinic_fax,
       });
@@ -167,24 +183,38 @@ export function PractitionerProfile() {
                   <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="text"
-                    name="clinic_address"
-                    placeholder="Clinic Address"
-                    value={formData.clinic_address}
+                    name="clinic_street_address"
+                    placeholder="Street Address"
+                    value={formData.clinic_street_address}
                     onChange={handleChange}
                     className="pl-10"
                   />
                 </div>
 
-                <div className="relative">
-                  <Hash className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    name="npi_number"
-                    placeholder="NPI Number"
-                    value={formData.npi_number}
-                    onChange={handleChange}
-                    className="pl-10"
-                  />
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="relative">
+                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      name="clinic_city"
+                      placeholder="City"
+                      value={formData.clinic_city}
+                      onChange={handleChange}
+                      className="pl-10"
+                    />
+                  </div>
+
+                  <div className="relative">
+                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      name="clinic_state"
+                      placeholder="State"
+                      value={formData.clinic_state}
+                      onChange={handleChange}
+                      className="pl-10"
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -212,6 +242,33 @@ export function PractitionerProfile() {
                     required
                     className="pl-10"
                   />
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="relative">
+                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      name="clinic_postal_code"
+                      placeholder="Postal Code"
+                      value={formData.clinic_postal_code}
+                      onChange={handleChange}
+                      className="pl-10"
+                    />
+                  </div>
+
+                  <div className="relative">
+                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      name="clinic_country"
+                      placeholder="Country"
+                      value={formData.clinic_country}
+                      onChange={handleChange}
+                      className="pl-10"
+                      defaultValue="United States"
+                    />
+                  </div>
                 </div>
 
                 <div className="relative">
