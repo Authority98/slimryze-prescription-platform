@@ -18,7 +18,6 @@ import { useToast } from './ui/use-toast';
 interface PrescriptionData {
   practitioner_id: string;
   patient_name: string;
-  patient_dob: string;
   patient_email: string;
   patient_phone: string;
   patient_address: string;
@@ -33,18 +32,23 @@ interface PrescriptionData {
 
 const initialFormData: FormData = {
   email: '',
-  doctorName: '',
+  doctorFirstName: '',
+  doctorLastName: '',
   npiNumber: '',
   deaNumber: '',
   clinicName: '',
   clinicAddress: '',
   clinicPhone: '',
   clinicFax: '',
-  patientName: '',
-  patientAddress: '',
+  patientFirstName: '',
+  patientLastName: '',
+  patientStreetAddress: '',
+  patientCity: '',
+  patientState: '',
+  patientPostalCode: '',
+  patientCountry: 'United States',
   patientEmail: '',
   patientPhone: '',
-  patientDOB: '',
   patientGender: '',
   prescriptionTime: '',
   dosage: '',
@@ -81,10 +85,14 @@ export default function PrescriptionForm() {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
+        const fullName = user.user_metadata.full_name || '';
+        const [firstName = '', lastName = ''] = fullName.split(' ');
+        
         setFormData(prev => ({
           ...prev,
           email: user.email || '',
-          doctorName: user.user_metadata.full_name || '',
+          doctorFirstName: firstName,
+          doctorLastName: lastName,
           npiNumber: user.user_metadata.npi_number || '',
           deaNumber: user.user_metadata.dea_number || '',
           clinicName: user.user_metadata.clinic_name || '',
@@ -119,7 +127,7 @@ export default function PrescriptionForm() {
           .from('practitioners')
           .insert([{
             id: user.id,
-            full_name: formData.doctorName,
+            full_name: `${formData.doctorFirstName} ${formData.doctorLastName}`,
             license_number: formData.npiNumber,
             clinic_name: formData.clinicName,
             clinic_address: formData.clinicAddress,
@@ -140,11 +148,10 @@ export default function PrescriptionForm() {
       // Now submit the prescription
       const prescriptionData: PrescriptionData = {
         practitioner_id: user.id,
-        patient_name: formData.patientName,
-        patient_dob: formData.patientDOB,
+        patient_name: `${formData.patientFirstName} ${formData.patientLastName}`,
         patient_email: formData.patientEmail,
         patient_phone: formData.patientPhone,
-        patient_address: formData.patientAddress,
+        patient_address: `${formData.patientStreetAddress}, ${formData.patientCity}, ${formData.patientState} ${formData.patientPostalCode}, ${formData.patientCountry}`,
         patient_gender: formData.patientGender,
         dosage: formData.dosage,
         quantity: parseInt(formData.quantity),
@@ -210,7 +217,8 @@ export default function PrescriptionForm() {
       ...initialFormData,
       // Keep practitioner data on reset
       email: prev.email,
-      doctorName: prev.doctorName,
+      doctorFirstName: prev.doctorFirstName,
+      doctorLastName: prev.doctorLastName,
       npiNumber: prev.npiNumber,
       deaNumber: prev.deaNumber,
       clinicName: prev.clinicName,

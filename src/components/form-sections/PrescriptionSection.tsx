@@ -3,14 +3,10 @@ import { Pill, Hash, RotateCcw, FileText } from 'lucide-react';
 import { FormData } from '../../types/form';
 import { Input } from "../ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 import { readOnlyStyles } from '../../lib/readOnlyStyles';
 import { FormFieldTooltip } from '../ui/form-field-tooltip';
 import { TooltipProvider } from '../ui/tooltip';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "../ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { cn } from "../../lib/utils";
 
 interface Props {
   formData: FormData;
@@ -44,112 +40,72 @@ export function PrescriptionSection({ formData, onChange, isReadOnly }: Props) {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
+          <div className="space-y-4">
+            <div className="grid grid-cols-3 gap-4">
               <FormFieldTooltip
                 title="Dosage"
-                description="Select the prescribed dosage"
+                description="Enter or select the prescribed dosage"
                 isReadOnly={isReadOnly}
               >
-                <div className="relative">
+                <div className="relative w-full">
                   <Pill className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Select 
-                    name="dosage" 
+                  <Input
+                    type="text"
+                    name="dosage"
+                    placeholder="Enter dosage"
                     value={formData.dosage}
-                    onValueChange={(value: string) => onChange({ target: { name: 'dosage', value } } as any)}
-                    disabled={isReadOnly}
-                  >
-                    <SelectTrigger className={`pl-10 ${isReadOnly ? readOnlyStyles.select : ''}`}>
-                      <SelectValue placeholder="Select Dosage" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0.25mg">0.25mg</SelectItem>
-                      <SelectItem value="0.5mg">0.5mg</SelectItem>
-                      <SelectItem value="1.0mg">1.0mg</SelectItem>
-                      <SelectItem value="1.7mg">1.7mg</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    onChange={onChange}
+                    className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
+                    required
+                    readOnly={isReadOnly}
+                  />
                 </div>
               </FormFieldTooltip>
-            </div>
-            <div className="space-y-2">
+
               <FormFieldTooltip
                 title="Quantity"
                 description="Enter or select the number of units prescribed"
                 isReadOnly={isReadOnly}
               >
                 <div className="relative w-full">
-                  <Popover open={isOpen} onOpenChange={setIsOpen}>
-                    <PopoverTrigger asChild>
-                      <div className="relative">
-                        <Hash className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
-                        <Input
-                          type="number"
-                          name="quantity"
-                          placeholder="Enter or select quantity"
-                          value={formData.quantity}
-                          onChange={onChange}
-                          className={`pl-10 w-full ${isReadOnly ? readOnlyStyles.input : ''}`}
-                          required
-                          readOnly={isReadOnly}
-                          min="1"
-                        />
-                      </div>
-                    </PopoverTrigger>
-                    {!isReadOnly && (
-                      <PopoverContent 
-                        className="p-0" 
-                        style={{ width: 'var(--radix-popover-trigger-width)' }}
-                        align="start"
-                      >
-                        <div className="w-full">
-                          {quantityOptions.map((option) => (
-                            <button
-                              key={option}
-                              className="w-full text-left px-4 py-2 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground outline-none"
-                              onClick={() => handleQuantitySelect(option)}
-                              type="button"
-                            >
-                              {option}
-                            </button>
-                          ))}
-                        </div>
-                      </PopoverContent>
-                    )}
-                  </Popover>
+                  <Hash className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="number"
+                    name="quantity"
+                    placeholder="Enter quantity"
+                    value={formData.quantity}
+                    onChange={onChange}
+                    className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
+                    required
+                    readOnly={isReadOnly}
+                    min="1"
+                  />
                 </div>
               </FormFieldTooltip>
-            </div>
-            <div className="space-y-2">
+
               <FormFieldTooltip
                 title="Refills"
-                description="Select the number of refills allowed"
+                description="Enter the number of refills allowed"
                 isReadOnly={isReadOnly}
               >
-                <div className="relative">
+                <div className="relative w-full">
                   <RotateCcw className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Select 
-                    name="refills" 
+                  <Input
+                    type="number"
+                    name="refills"
+                    placeholder="Enter refills"
                     value={formData.refills}
-                    onValueChange={(value: string) => onChange({ target: { name: 'refills', value } } as any)}
-                    disabled={isReadOnly}
-                  >
-                    <SelectTrigger className={`pl-10 ${isReadOnly ? readOnlyStyles.select : ''}`}>
-                      <SelectValue placeholder="Select Refills" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0">0</SelectItem>
-                      <SelectItem value="1">1</SelectItem>
-                      <SelectItem value="2">2</SelectItem>
-                      <SelectItem value="3">3</SelectItem>
-                      <SelectItem value="4">4</SelectItem>
-                      <SelectItem value="5">5</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    onChange={onChange}
+                    className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
+                    required
+                    readOnly={isReadOnly}
+                    min="0"
+                  />
                 </div>
               </FormFieldTooltip>
             </div>
-            <div className="space-y-2 md:col-span-2">
+
+            <div className="space-y-2">
               <FormFieldTooltip
                 title="Directions"
                 description="Enter any specific directions for the patient"

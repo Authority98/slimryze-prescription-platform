@@ -51,16 +51,16 @@ export function PractitionerSection({ formData, onChange, isReadOnly = false }: 
               </FormFieldTooltip>
 
               <FormFieldTooltip
-                title="Doctor Name"
-                description={tooltipMessage || "Enter the doctor's full name"}
+                title="First Name"
+                description={tooltipMessage || "Enter the doctor's first name"}
               >
                 <div className="relative">
                   <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="text"
-                    name="doctorName"
-                    placeholder="Doctor Name"
-                    value={formData.doctorName}
+                    name="doctorFirstName"
+                    placeholder="First Name"
+                    value={formData.doctorFirstName}
                     onChange={onChange}
                     className={cn(
                       "pl-10",
@@ -73,16 +73,16 @@ export function PractitionerSection({ formData, onChange, isReadOnly = false }: 
               </FormFieldTooltip>
 
               <FormFieldTooltip
-                title="NPI Number"
-                description={tooltipMessage || "Enter the National Provider Identifier (NPI) number"}
+                title="Clinic Address"
+                description={tooltipMessage || "Enter the clinic's full address"}
               >
                 <div className="relative">
-                  <Hash className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="text"
-                    name="npiNumber"
-                    placeholder="NPI Number"
-                    value={formData.npiNumber}
+                    name="clinicAddress"
+                    placeholder="Clinic Address"
+                    value={formData.clinicAddress}
                     onChange={onChange}
                     className={cn(
                       "pl-10",
@@ -141,16 +141,16 @@ export function PractitionerSection({ formData, onChange, isReadOnly = false }: 
               </FormFieldTooltip>
 
               <FormFieldTooltip
-                title="Clinic Address"
-                description={tooltipMessage || "Enter the clinic's full address"}
+                title="Last Name"
+                description={tooltipMessage || "Enter the doctor's last name"}
               >
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="text"
-                    name="clinicAddress"
-                    placeholder="Clinic Address"
-                    value={formData.clinicAddress}
+                    name="doctorLastName"
+                    placeholder="Last Name"
+                    value={formData.doctorLastName}
                     onChange={onChange}
                     className={cn(
                       "pl-10",

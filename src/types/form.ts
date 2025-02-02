@@ -1,17 +1,22 @@
 export interface FormData {
   email: string;
-  doctorName: string;
+  doctorFirstName: string;
+  doctorLastName: string;
   npiNumber: string;
   deaNumber: string;
   clinicName: string;
   clinicAddress: string;
   clinicPhone: string;
   clinicFax: string;
-  patientName: string;
-  patientAddress: string;
+  patientFirstName: string;
+  patientLastName: string;
+  patientStreetAddress: string;
+  patientCity: string;
+  patientState: string;
+  patientPostalCode: string;
+  patientCountry: string;
   patientEmail: string;
   patientPhone: string;
-  patientDOB: string;
   patientGender: string;
   quickNotes?: string;
   prescriptionTime: string;

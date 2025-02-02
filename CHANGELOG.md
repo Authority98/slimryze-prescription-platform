@@ -266,8 +266,15 @@ All notable changes to this project will be documented in this file.
 - Optimized particle effect performance
 - Improved spacing and alignment in all sections
 - Enhanced mobile menu transitions and interactions
+- Split doctor name into first and last name fields in Practitioner Information section
+- Removed date of birth field from Patient Information section
+- Improved form layout and field organization
+  - Swapped clinic address field with doctor's last name in Practitioner Information
+  - Reorganized Prescription Details section with dosage, quantity, and refills in a single row
+  - Simplified input fields in Prescription Details section
 
 ### Fixed
+- Fixed lodash import for Netlify build compatibility
 - Fixed prescription deletion functionality with proper RLS policies
 - Fixed patient list width consistency with other admin pages
 - Fixed toast notifications not appearing in the prescription form
