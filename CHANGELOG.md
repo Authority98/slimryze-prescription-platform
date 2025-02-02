@@ -267,6 +267,10 @@ All notable changes to this project will be documented in this file.
 - Improved spacing and alignment in all sections
 - Enhanced mobile menu transitions and interactions
 - Split doctor name into first and last name fields in Practitioner Information section
+- Updated Edit Practitioner Profile to match new field structure
+  - Split full name into first and last name fields
+  - Improved field organization and layout
+  - Enhanced data handling for split name fields
 - Removed date of birth field from Patient Information section
 - Improved form layout and field organization
   - Swapped clinic address field with doctor's last name in Practitioner Information

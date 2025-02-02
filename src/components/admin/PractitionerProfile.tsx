@@ -10,7 +10,8 @@ import { useUserMetadata } from '../auth/UserMetadataContext';
 
 interface FormData {
   email: string;
-  full_name: string;
+  first_name: string;
+  last_name: string;
   npi_number: string;
   dea_number: string;
   clinic_name: string;
@@ -26,7 +27,8 @@ export function PractitionerProfile() {
   const { metadata, updateMetadata } = useUserMetadata();
   const [formData, setFormData] = useState<FormData>({
     email: '',
-    full_name: '',
+    first_name: '',
+    last_name: '',
     npi_number: '',
     dea_number: '',
     clinic_name: '',
@@ -54,9 +56,13 @@ export function PractitionerProfile() {
       if (userError) throw userError;
 
       if (user) {
+        const fullName = user.user_metadata.full_name || '';
+        const [firstName = '', lastName = ''] = fullName.split(' ');
+        
         setFormData({
           email: user.email || '',
-          full_name: user.user_metadata.full_name || '',
+          first_name: firstName,
+          last_name: lastName,
           npi_number: user.user_metadata.npi_number || '',
           dea_number: user.user_metadata.dea_number || '',
           clinic_name: user.user_metadata.clinic_name || '',
@@ -80,7 +86,7 @@ export function PractitionerProfile() {
 
     try {
       await updateMetadata({
-        full_name: formData.full_name,
+        full_name: `${formData.first_name} ${formData.last_name}`,
         npi_number: formData.npi_number,
         dea_number: formData.dea_number,
         clinic_name: formData.clinic_name,
@@ -148,9 +154,22 @@ export function PractitionerProfile() {
                   <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="text"
-                    name="full_name"
-                    placeholder="Doctor Name"
-                    value={formData.full_name}
+                    name="first_name"
+                    placeholder="First Name"
+                    value={formData.first_name}
+                    onChange={handleChange}
+                    required
+                    className="pl-10"
+                  />
+                </div>
+
+                <div className="relative">
+                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    name="last_name"
+                    placeholder="Last Name"
+                    value={formData.last_name}
                     onChange={handleChange}
                     required
                     className="pl-10"
@@ -164,18 +183,6 @@ export function PractitionerProfile() {
                     name="npi_number"
                     placeholder="NPI Number"
                     value={formData.npi_number}
-                    onChange={handleChange}
-                    className="pl-10"
-                  />
-                </div>
-
-                <div className="relative">
-                  <Hash className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    name="dea_number"
-                    placeholder="DEA Number"
-                    value={formData.dea_number}
                     onChange={handleChange}
                     className="pl-10"
                   />
