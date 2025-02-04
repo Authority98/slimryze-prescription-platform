@@ -22,6 +22,7 @@ export interface FormData {
   patientEmail: string;
   patientPhone: string;
   patientGender: string;
+  patientDob: string;
   quickNotes?: string;
   prescriptionTime: string;
   dosage: string;

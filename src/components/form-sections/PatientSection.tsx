@@ -170,6 +170,26 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
               </FormFieldTooltip>
 
               <FormFieldTooltip
+                title="Date of Birth"
+                description="Enter the patient's date of birth"
+                isReadOnly={isReadOnly}
+              >
+                <div className="relative">
+                  <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="date"
+                    name="patientDob"
+                    placeholder="Date of Birth"
+                    value={formData.patientDob}
+                    onChange={onChange}
+                    className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
+                    required
+                    readOnly={isReadOnly}
+                  />
+                </div>
+              </FormFieldTooltip>
+
+              <FormFieldTooltip
                 title="Street Address"
                 description="Enter the patient's street address"
                 isReadOnly={isReadOnly}
@@ -344,7 +364,6 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
                       className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
                       required
                       readOnly={isReadOnly}
-                      defaultValue="US"
                     />
                   </div>
                 </FormFieldTooltip>

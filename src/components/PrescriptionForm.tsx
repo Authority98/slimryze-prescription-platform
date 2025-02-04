@@ -22,6 +22,7 @@ interface PrescriptionData {
   patient_phone: string;
   patient_address: string;
   patient_gender: string;
+  patient_dob: string;
   dosage: string;
   quantity: number;
   refills: number;
@@ -50,6 +51,7 @@ const initialFormData: FormData = {
   patientEmail: '',
   patientPhone: '',
   patientGender: '',
+  patientDob: '',
   prescriptionTime: '',
   dosage: '',
   quantity: '',
@@ -153,6 +155,7 @@ export default function PrescriptionForm() {
         patient_phone: formData.patientPhone,
         patient_address: `${formData.patientStreetAddress}, ${formData.patientCity}, ${formData.patientState} ${formData.patientPostalCode}, ${formData.patientCountry}`,
         patient_gender: formData.patientGender,
+        patient_dob: formData.patientDob,
         dosage: formData.dosage,
         quantity: parseInt(formData.quantity),
         refills: parseInt(formData.refills),
