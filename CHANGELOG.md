@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Enhanced Patient Information section with auto-fetch functionality
+  - Added automatic patient data lookup by email and phone
+  - Implemented debounced search to optimize performance
+  - Added visual indicators for auto-fetch functionality
+  - Added success toast notifications for data loading
+  - Maintained data consistency across form fields
 - Initial project setup with React, TypeScript, and Vite
 - Integrated Supabase for authentication and database
 - Added shadcn/ui components for consistent UI

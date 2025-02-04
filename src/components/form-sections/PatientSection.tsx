@@ -115,10 +115,54 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
               <FormFieldTooltip
-                title="Patient Email"
+                title="First Name"
+                description="Enter the patient's first name"
+                isReadOnly={isReadOnly}
+              >
+                <div className="relative">
+                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    name="patientFirstName"
+                    placeholder="First Name"
+                    value={formData.patientFirstName}
+                    onChange={onChange}
+                    className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
+                    required
+                    readOnly={isReadOnly}
+                  />
+                </div>
+              </FormFieldTooltip>
+            </div>
+
+            <div className="space-y-4">
+              <FormFieldTooltip
+                title="Last Name"
+                description="Enter the patient's last name"
+                isReadOnly={isReadOnly}
+              >
+                <div className="relative">
+                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    name="patientLastName"
+                    placeholder="Last Name"
+                    value={formData.patientLastName}
+                    onChange={onChange}
+                    className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
+                    required
+                    readOnly={isReadOnly}
+                  />
+                </div>
+              </FormFieldTooltip>
+            </div>
+
+            <div className="space-y-4">
+              <FormFieldTooltip
+                title="Email"
                 description="Enter the patient's email address"
                 isReadOnly={isReadOnly}
               >
@@ -127,7 +171,7 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
                   <Input
                     type="email"
                     name="patientEmail"
-                    placeholder="Patient Email"
+                    placeholder="Email Address"
                     value={formData.patientEmail}
                     onChange={handleInputChange}
                     className={`pl-10 pr-8 ${isReadOnly ? readOnlyStyles.input : ''}`}
@@ -148,91 +192,9 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
                   )}
                 </div>
               </FormFieldTooltip>
-
-              <FormFieldTooltip
-                title="First Name"
-                description="Enter the patient's first name"
-                isReadOnly={isReadOnly}
-              >
-                <div className="relative">
-                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    name="patientFirstName"
-                    placeholder="First Name"
-                    value={formData.patientFirstName}
-                    onChange={onChange}
-                    className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
-                    required
-                    readOnly={isReadOnly}
-                  />
-                </div>
-              </FormFieldTooltip>
-
-              <FormFieldTooltip
-                title="Date of Birth"
-                description="Enter the patient's date of birth"
-                isReadOnly={isReadOnly}
-              >
-                <div className="relative">
-                  <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="date"
-                    name="patientDob"
-                    placeholder="Date of Birth"
-                    value={formData.patientDob}
-                    onChange={onChange}
-                    className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
-                    required
-                    readOnly={isReadOnly}
-                  />
-                </div>
-              </FormFieldTooltip>
-
-              <FormFieldTooltip
-                title="Street Address"
-                description="Enter the patient's street address"
-                isReadOnly={isReadOnly}
-              >
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    name="patientStreetAddress"
-                    placeholder="Street Address"
-                    value={formData.patientStreetAddress}
-                    onChange={onChange}
-                    className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
-                    required
-                    readOnly={isReadOnly}
-                  />
-                </div>
-              </FormFieldTooltip>
-
-              <FormFieldTooltip
-                title="Gender"
-                description="Select the patient's gender"
-                isReadOnly={isReadOnly}
-              >
-                <div className="relative">
-                  <Users className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <select
-                    name="patientGender"
-                    value={formData.patientGender}
-                    onChange={onChange as any}
-                    className={`w-full pl-10 h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${isReadOnly ? readOnlyStyles.input : ''}`}
-                    required
-                    disabled={isReadOnly}
-                  >
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-              </FormFieldTooltip>
             </div>
-            <div className="space-y-2">
+
+            <div className="space-y-4">
               <FormFieldTooltip
                 title="Phone Number"
                 description="Enter the patient's phone number"
@@ -264,19 +226,21 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
                   )}
                 </div>
               </FormFieldTooltip>
+            </div>
 
+            <div className="col-span-2 space-y-4">
               <FormFieldTooltip
-                title="Last Name"
-                description="Enter the patient's last name"
+                title="Street Address"
+                description="Enter the patient's street address"
                 isReadOnly={isReadOnly}
               >
                 <div className="relative">
-                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="text"
-                    name="patientLastName"
-                    placeholder="Last Name"
-                    value={formData.patientLastName}
+                    name="patientStreetAddress"
+                    placeholder="Street Address"
+                    value={formData.patientStreetAddress}
                     onChange={onChange}
                     className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
                     required
@@ -285,7 +249,7 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
                 </div>
               </FormFieldTooltip>
 
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-4 gap-4">
                 <FormFieldTooltip
                   title="City"
                   description="Enter the patient's city"
@@ -325,9 +289,7 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
                     />
                   </div>
                 </FormFieldTooltip>
-              </div>
 
-              <div className="grid grid-cols-2 gap-2">
                 <FormFieldTooltip
                   title="Postal Code"
                   description="Enter the patient's postal code"
@@ -358,13 +320,59 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
                     <Input
                       type="text"
                       name="patientCountry"
-                      placeholder="Country (e.g., US)"
+                      placeholder="Country"
                       value={formData.patientCountry}
                       onChange={onChange}
                       className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
                       required
                       readOnly={isReadOnly}
+                      defaultValue="US"
                     />
+                  </div>
+                </FormFieldTooltip>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <FormFieldTooltip
+                  title="Date of Birth"
+                  description="Enter the patient's date of birth"
+                  isReadOnly={isReadOnly}
+                >
+                  <div className="relative">
+                    <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="date"
+                      name="patientDob"
+                      placeholder="Date of Birth"
+                      value={formData.patientDob}
+                      onChange={onChange}
+                      className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
+                      required
+                      readOnly={isReadOnly}
+                    />
+                  </div>
+                </FormFieldTooltip>
+
+                <FormFieldTooltip
+                  title="Gender"
+                  description="Select the patient's gender"
+                  isReadOnly={isReadOnly}
+                >
+                  <div className="relative">
+                    <Users className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <select
+                      name="patientGender"
+                      value={formData.patientGender}
+                      onChange={onChange as any}
+                      className={`w-full pl-10 h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${isReadOnly ? readOnlyStyles.input : ''}`}
+                      required
+                      disabled={isReadOnly}
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
                   </div>
                 </FormFieldTooltip>
               </div>
