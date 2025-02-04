@@ -7,6 +7,8 @@ import { User, Hash, Building2, MapPin, Phone, Mail, FileText, Printer } from "l
 import { LoadingPage } from "../ui/loading";
 import { Alert, AlertDescription } from "../ui/alert";
 import { useUserMetadata } from '../auth/UserMetadataContext';
+import { FormFieldTooltip } from '../ui/form-field-tooltip';
+import { TooltipProvider } from '../ui/tooltip';
 
 interface FormData {
   email: string;
@@ -131,182 +133,239 @@ export function PractitionerProfile() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <Card>
-        <CardHeader className="space-y-1 pb-4">
-          <div className="flex items-center gap-2">
-            <User className="w-5 h-5 text-purple-600" />
-            <CardTitle>Edit Practitioner Profile</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {error && (
-            <Alert variant="destructive" className="mb-6 border-red-500/50 bg-red-500/10">
-              <AlertDescription className="text-red-600">{error}</AlertDescription>
-            </Alert>
-          )}
-          {success && (
-            <Alert className="mb-6 border-green-500/50 bg-green-500/10">
-              <AlertDescription className="text-green-600">{success}</AlertDescription>
-            </Alert>
-          )}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="email"
-                    name="email"
-                    placeholder="Email Address"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="pl-10"
-                  />
-                </div>
-
-                <div className="relative">
-                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    name="first_name"
-                    placeholder="First Name"
-                    value={formData.first_name}
-                    onChange={handleChange}
-                    required
-                    className="pl-10"
-                  />
-                </div>
-
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    name="clinic_street_address"
-                    placeholder="Street Address"
-                    value={formData.clinic_street_address}
-                    onChange={handleChange}
-                    className="pl-10"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="text"
-                      name="clinic_city"
-                      placeholder="City"
-                      value={formData.clinic_city}
-                      onChange={handleChange}
-                      className="pl-10"
-                    />
-                  </div>
-
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="text"
-                      name="clinic_state"
-                      placeholder="State"
-                      value={formData.clinic_state}
-                      onChange={handleChange}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="relative">
-                  <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    name="clinic_name"
-                    placeholder="Clinic Name"
-                    value={formData.clinic_name}
-                    onChange={handleChange}
-                    className="pl-10"
-                  />
-                </div>
-
-                <div className="relative">
-                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    name="last_name"
-                    placeholder="Last Name"
-                    value={formData.last_name}
-                    onChange={handleChange}
-                    required
-                    className="pl-10"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="text"
-                      name="clinic_postal_code"
-                      placeholder="Postal Code"
-                      value={formData.clinic_postal_code}
-                      onChange={handleChange}
-                      className="pl-10"
-                    />
-                  </div>
-
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="text"
-                      name="clinic_country"
-                      placeholder="Country"
-                      value={formData.clinic_country}
-                      onChange={handleChange}
-                      className="pl-10"
-                      defaultValue="United States"
-                    />
-                  </div>
-                </div>
-
-                <div className="relative">
-                  <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    name="clinic_phone"
-                    placeholder="Clinic Phone"
-                    value={formData.clinic_phone}
-                    onChange={handleChange}
-                    className="pl-10"
-                  />
-                </div>
-
-                <div className="relative">
-                  <Printer className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    name="clinic_fax"
-                    placeholder="Clinic Fax"
-                    value={formData.clinic_fax}
-                    onChange={handleChange}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
+    <TooltipProvider>
+      <div className="max-w-2xl mx-auto p-6">
+        <Card>
+          <CardHeader className="space-y-1 pb-4">
+            <div className="flex items-center gap-2">
+              <User className="w-5 h-5 text-purple-600" />
+              <CardTitle>Edit Practitioner Profile</CardTitle>
             </div>
+          </CardHeader>
+          <CardContent>
+            {error && (
+              <Alert variant="destructive" className="mb-6 border-red-500/50 bg-red-500/10">
+                <AlertDescription className="text-red-600">{error}</AlertDescription>
+              </Alert>
+            )}
+            {success && (
+              <Alert className="mb-6 border-green-500/50 bg-green-500/10">
+                <AlertDescription className="text-green-600">{success}</AlertDescription>
+              </Alert>
+            )}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <FormFieldTooltip
+                    title="Email"
+                    description="Your registered email address"
+                  >
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        type="email"
+                        name="email"
+                        placeholder="Email Address"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="pl-10"
+                      />
+                    </div>
+                  </FormFieldTooltip>
 
-            <Button
-              type="submit"
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
-              disabled={loading}
-            >
-              {loading ? 'Updating...' : 'Update Profile'}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+                  <FormFieldTooltip
+                    title="First Name"
+                    description="Your first name"
+                  >
+                    <div className="relative">
+                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        type="text"
+                        name="first_name"
+                        placeholder="First Name"
+                        value={formData.first_name}
+                        onChange={handleChange}
+                        required
+                        className="pl-10"
+                      />
+                    </div>
+                  </FormFieldTooltip>
+
+                  <FormFieldTooltip
+                    title="Street Address"
+                    description="Your clinic's street address"
+                  >
+                    <div className="relative">
+                      <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        type="text"
+                        name="clinic_street_address"
+                        placeholder="Street Address"
+                        value={formData.clinic_street_address}
+                        onChange={handleChange}
+                        className="pl-10"
+                      />
+                    </div>
+                  </FormFieldTooltip>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <FormFieldTooltip
+                      title="Postal Code"
+                      description="Your clinic's postal code"
+                    >
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          type="text"
+                          name="clinic_postal_code"
+                          placeholder="Postal Code"
+                          value={formData.clinic_postal_code}
+                          onChange={handleChange}
+                          className="pl-10"
+                        />
+                      </div>
+                    </FormFieldTooltip>
+
+                    <FormFieldTooltip
+                      title="Country"
+                      description="Your clinic's country"
+                    >
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          type="text"
+                          name="clinic_country"
+                          placeholder="Country"
+                          value={formData.clinic_country}
+                          onChange={handleChange}
+                          className="pl-10"
+                          defaultValue="United States"
+                        />
+                      </div>
+                    </FormFieldTooltip>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <FormFieldTooltip
+                    title="Clinic Name"
+                    description="Your clinic or practice name"
+                  >
+                    <div className="relative">
+                      <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        type="text"
+                        name="clinic_name"
+                        placeholder="Clinic Name"
+                        value={formData.clinic_name}
+                        onChange={handleChange}
+                        className="pl-10"
+                      />
+                    </div>
+                  </FormFieldTooltip>
+
+                  <FormFieldTooltip
+                    title="Last Name"
+                    description="Your last name"
+                  >
+                    <div className="relative">
+                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        type="text"
+                        name="last_name"
+                        placeholder="Last Name"
+                        value={formData.last_name}
+                        onChange={handleChange}
+                        required
+                        className="pl-10"
+                      />
+                    </div>
+                  </FormFieldTooltip>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <FormFieldTooltip
+                      title="City"
+                      description="Your clinic's city"
+                    >
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          type="text"
+                          name="clinic_city"
+                          placeholder="City"
+                          value={formData.clinic_city}
+                          onChange={handleChange}
+                          className="pl-10"
+                        />
+                      </div>
+                    </FormFieldTooltip>
+
+                    <FormFieldTooltip
+                      title="State"
+                      description="Your clinic's state"
+                    >
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          type="text"
+                          name="clinic_state"
+                          placeholder="State"
+                          value={formData.clinic_state}
+                          onChange={handleChange}
+                          className="pl-10"
+                        />
+                      </div>
+                    </FormFieldTooltip>
+                  </div>
+
+                  <FormFieldTooltip
+                    title="Phone Number"
+                    description="Your clinic's phone number"
+                  >
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        type="text"
+                        name="clinic_phone"
+                        placeholder="Clinic Phone"
+                        value={formData.clinic_phone}
+                        onChange={handleChange}
+                        className="pl-10"
+                      />
+                    </div>
+                  </FormFieldTooltip>
+
+                  <FormFieldTooltip
+                    title="Fax Number"
+                    description="Your clinic's fax number"
+                  >
+                    <div className="relative">
+                      <Printer className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        type="text"
+                        name="clinic_fax"
+                        placeholder="Clinic Fax"
+                        value={formData.clinic_fax}
+                        onChange={handleChange}
+                        className="pl-10"
+                      />
+                    </div>
+                  </FormFieldTooltip>
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
+                disabled={loading}
+              >
+                {loading ? 'Updating...' : 'Update Profile'}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </TooltipProvider>
   );
 }
