@@ -285,6 +285,8 @@ All notable changes to this project will be documented in this file.
   - Swapped clinic address field with doctor's last name in Practitioner Information
   - Reorganized Prescription Details section with dosage, quantity, and refills in a single row
   - Simplified input fields in Prescription Details section
+- Updated navigation in admin header
+  - Fixed "Create New Prescription" button to correctly navigate to /prescription
 
 ### Fixed
 - Fixed lodash import for Netlify build compatibility

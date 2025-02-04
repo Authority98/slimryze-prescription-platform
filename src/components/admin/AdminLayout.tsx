@@ -64,7 +64,7 @@ export function AdminLayout({ children }: Props) {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Link to="/">
+              <Link to="/prescription">
                 <Button
                   variant="outline"
                   size="sm"
