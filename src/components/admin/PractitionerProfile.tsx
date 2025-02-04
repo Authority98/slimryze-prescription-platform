@@ -42,7 +42,7 @@ export function PractitionerProfile() {
     clinic_city: '',
     clinic_state: '',
     clinic_postal_code: '',
-    clinic_country: 'United States',
+    clinic_country: 'US',
     clinic_phone: '',
     clinic_fax: '',
   });
@@ -80,7 +80,7 @@ export function PractitionerProfile() {
           clinic_city: user.user_metadata.clinic_city || '',
           clinic_state: user.user_metadata.clinic_state || '',
           clinic_postal_code: user.user_metadata.clinic_postal_code || '',
-          clinic_country: user.user_metadata.clinic_country || 'United States',
+          clinic_country: user.user_metadata.clinic_country || 'US',
           clinic_phone: user.user_metadata.clinic_phone || '',
           clinic_fax: user.user_metadata.clinic_fax || '',
         });
@@ -225,6 +225,8 @@ export function PractitionerProfile() {
                       />
                     </div>
                   </FormFieldTooltip>
+
+
                 </div>
 
                 <div className="space-y-2">
@@ -330,28 +332,13 @@ export function PractitionerProfile() {
                           value={formData.clinic_country}
                           onChange={handleChange}
                           className="pl-10"
-                          defaultValue="United States"
+                          defaultValue="US"
                         />
                       </div>
                     </FormFieldTooltip>
                   </div>
 
-                  <FormFieldTooltip
-                    title="Fax Number"
-                    description="Your clinic's fax number"
-                  >
-                    <div className="relative">
-                      <Printer className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        type="text"
-                        name="clinic_fax"
-                        placeholder="Clinic Fax"
-                        value={formData.clinic_fax}
-                        onChange={handleChange}
-                        className="pl-10"
-                      />
-                    </div>
-                  </FormFieldTooltip>
+
                 </div>
               </div>
 

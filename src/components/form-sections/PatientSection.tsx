@@ -338,13 +338,13 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
                     <Input
                       type="text"
                       name="patientCountry"
-                      placeholder="Country"
+                      placeholder="Country (e.g., US)"
                       value={formData.patientCountry}
                       onChange={onChange}
                       className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
                       required
                       readOnly={isReadOnly}
-                      defaultValue="United States"
+                      defaultValue="US"
                     />
                   </div>
                 </FormFieldTooltip>

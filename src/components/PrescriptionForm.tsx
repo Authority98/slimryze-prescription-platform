@@ -46,7 +46,7 @@ const initialFormData: FormData = {
   patientCity: '',
   patientState: '',
   patientPostalCode: '',
-  patientCountry: 'United States',
+  patientCountry: 'US',
   patientEmail: '',
   patientPhone: '',
   patientGender: '',

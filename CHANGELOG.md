@@ -48,6 +48,16 @@ All notable changes to this project will be documented in this file.
   - Print-specific styling for better readability
 - Toast notifications for prescription submission success/failure
 - Toast notifications for patient deletion success/failure
+- Enhanced patient information management
+  - Auto-fetch patient data based on email/phone input
+  - Improved form validation for required fields
+  - Added gender selection field
+  - Structured address fields (street, city, state, postal code, country)
+- Improved prescription handling
+  - Added detailed patient information storage
+  - Enhanced prescription history view
+  - Added patient lookup functionality
+  - Implemented debounced search for better performance
 - Delete functionality for patients and their associated prescriptions
 - Patient details dialog with prescription history
 - Improved error handling with descriptive error messages
@@ -329,4 +339,4 @@ All notable changes to this project will be documented in this file.
 - Legacy grid pattern SVG
 
 ## [0.1.0] - 2024-03-17
-- Initial release with core functionality 
+- Initial release with core functionality
