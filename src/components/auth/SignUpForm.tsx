@@ -17,7 +17,8 @@ export function SignUpForm({ onSuccess }: Props) {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    doctorName: '',
+    firstName: '',
+    lastName: '',
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +39,7 @@ export function SignUpForm({ onSuccess }: Props) {
         password: formData.password,
         options: {
           data: {
-            full_name: formData.doctorName,
+            full_name: `${formData.firstName} ${formData.lastName}`,
             clinic_name: '' // Initialize with empty string
           }
         }
@@ -67,6 +68,35 @@ export function SignUpForm({ onSuccess }: Props) {
             </Alert>
           )}
           
+          <div className="grid grid-cols-2 gap-4">
+            <div className="relative">
+              <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="firstName"
+                name="firstName"
+                type="text"
+                placeholder="First name"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+                className="pl-10"
+              />
+            </div>
+            <div className="relative">
+              <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="lastName"
+                name="lastName"
+                type="text"
+                placeholder="Last name"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+                className="pl-10"
+              />
+            </div>
+          </div>
+
           <div className="space-y-2">
             <div className="relative">
               <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -98,22 +128,6 @@ export function SignUpForm({ onSuccess }: Props) {
               />
             </div>
           </div>
-
-          <div className="space-y-2">
-            <div className="relative">
-              <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="doctorName"
-                name="doctorName"
-                type="text"
-                placeholder="Full Name"
-                value={formData.doctorName}
-                onChange={handleChange}
-                required
-                className="pl-10"
-              />
-            </div>
-          </div>
         </div>
 
         <Button
@@ -126,4 +140,4 @@ export function SignUpForm({ onSuccess }: Props) {
       </form>
     </div>
   );
-} 
+}

@@ -154,8 +154,8 @@ export function PractitionerProfile() {
               </Alert>
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormFieldTooltip
                     title="Email"
                     description="Your registered email address"
@@ -175,16 +175,36 @@ export function PractitionerProfile() {
                   </FormFieldTooltip>
 
                   <FormFieldTooltip
-                    title="First Name"
-                    description="Your first name"
+                    title="Clinic Name"
+                    description="Your clinic's name"
                   >
                     <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
                         type="text"
-                        name="first_name"
-                        placeholder="First Name"
-                        value={formData.first_name}
+                        name="clinic_name"
+                        placeholder="Clinic Name"
+                        value={formData.clinic_name}
+                        onChange={handleChange}
+                        required
+                        className="pl-10"
+                      />
+                    </div>
+                  </FormFieldTooltip>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormFieldTooltip
+                    title="NPI Number"
+                    description="Your National Provider Identifier number"
+                  >
+                    <div className="relative">
+                      <Hash className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        type="text"
+                        name="npi_number"
+                        placeholder="NPI Number"
+                        value={formData.npi_number}
                         onChange={handleChange}
                         required
                         className="pl-10"
@@ -193,22 +213,25 @@ export function PractitionerProfile() {
                   </FormFieldTooltip>
 
                   <FormFieldTooltip
-                    title="Street Address"
-                    description="Your clinic's street address"
+                    title="DEA Number"
+                    description="Your Drug Enforcement Administration number"
                   >
                     <div className="relative">
-                      <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <FileText className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
                         type="text"
-                        name="clinic_street_address"
-                        placeholder="Street Address"
-                        value={formData.clinic_street_address}
+                        name="dea_number"
+                        placeholder="DEA Number"
+                        value={formData.dea_number}
                         onChange={handleChange}
+                        required
                         className="pl-10"
                       />
                     </div>
                   </FormFieldTooltip>
+                </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormFieldTooltip
                     title="Phone Number"
                     description="Your clinic's phone number"
@@ -226,46 +249,42 @@ export function PractitionerProfile() {
                     </div>
                   </FormFieldTooltip>
 
-
+                  <FormFieldTooltip
+                    title="Fax Number"
+                    description="Your clinic's fax number"
+                  >
+                    <div className="relative">
+                      <Printer className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        type="text"
+                        name="clinic_fax"
+                        placeholder="Clinic Fax"
+                        value={formData.clinic_fax}
+                        onChange={handleChange}
+                        className="pl-10"
+                      />
+                    </div>
+                  </FormFieldTooltip>
                 </div>
 
-                <div className="space-y-2">
-                  <FormFieldTooltip
-                    title="Clinic Name"
-                    description="Your clinic or practice name"
-                  >
-                    <div className="relative">
-                      <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        type="text"
-                        name="clinic_name"
-                        placeholder="Clinic Name"
-                        value={formData.clinic_name}
-                        onChange={handleChange}
-                        className="pl-10"
-                      />
-                    </div>
-                  </FormFieldTooltip>
+                <FormFieldTooltip
+                  title="Street Address"
+                  description="Your clinic's street address"
+                >
+                  <div className="relative">
+                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      name="clinic_street_address"
+                      placeholder="Street Address"
+                      value={formData.clinic_street_address}
+                      onChange={handleChange}
+                      className="pl-10"
+                    />
+                  </div>
+                </FormFieldTooltip>
 
-                  <FormFieldTooltip
-                    title="Last Name"
-                    description="Your last name"
-                  >
-                    <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        type="text"
-                        name="last_name"
-                        placeholder="Last Name"
-                        value={formData.last_name}
-                        onChange={handleChange}
-                        required
-                        className="pl-10"
-                      />
-                    </div>
-                  </FormFieldTooltip>
-
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-4 gap-2">
                     <FormFieldTooltip
                       title="City"
                       description="Your clinic's city"
@@ -299,9 +318,7 @@ export function PractitionerProfile() {
                         />
                       </div>
                     </FormFieldTooltip>
-                  </div>
 
-                  <div className="grid grid-cols-2 gap-2">
                     <FormFieldTooltip
                       title="Postal Code"
                       description="Your clinic's postal code"
@@ -340,16 +357,15 @@ export function PractitionerProfile() {
 
 
                 </div>
-              </div>
 
-              <Button
-                type="submit"
-                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
-                disabled={loading}
-              >
-                {loading ? 'Updating...' : 'Update Profile'}
-              </Button>
-            </form>
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
+                  disabled={loading}
+                >
+                  {loading ? 'Updating...' : 'Update Profile'}
+                </Button>
+              </form>
           </CardContent>
         </Card>
       </div>
