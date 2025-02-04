@@ -34,16 +34,28 @@ export function PatientDetailsDialog({ patient, onClose }: Props) {
 
   const fetchPrescriptionHistory = async () => {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.error('No authenticated user found');
+        return;
+      }
+
       const { data, error } = await supabase
         .from('prescriptions')
         .select('id, created_at, dosage, quantity, refills')
         .eq('patient_email', patient.patient_email)
+        .eq('practitioner_id', user.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
       setPrescriptions(data || []);
     } catch (error) {
       console.error('Error fetching prescription history:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load prescription history. Please try again."
+      });
     } finally {
       setLoading(false);
     }
@@ -162,4 +174,4 @@ export function PatientDetailsDialog({ patient, onClose }: Props) {
       </DialogContent>
     </Dialog>
   );
-} 
+}

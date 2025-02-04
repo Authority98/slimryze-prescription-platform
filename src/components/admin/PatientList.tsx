@@ -42,29 +42,36 @@ export function PatientList() {
 
   const fetchPatients = async () => {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.error('No authenticated user found');
+        return;
+      }
+
       const { data, error } = await supabase
         .from('prescriptions')
-        .select('patient_name, patient_email, patient_phone, patient_address, patient_dob, patient_gender')
-        .order('patient_name', { ascending: true });
+        .select('patient_name, patient_email, patient_phone, patient_address, patient_dob, patient_gender, created_at')
+        .eq('practitioner_id', user.id)
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
 
-      // Group by patient and count prescriptions
+      // Group by patient and count prescriptions with proper date handling
       const patientMap = new Map<string, Patient>();
-      data.forEach(prescription => {
+      data?.forEach(prescription => {
         const key = prescription.patient_email || prescription.patient_name;
         if (!patientMap.has(key)) {
           patientMap.set(key, {
             ...prescription,
             prescription_count: 1,
-            latest_prescription: prescription.patient_dob // Using dob temporarily, will update with created_at
+            latest_prescription: prescription.created_at
           });
         } else {
           const existing = patientMap.get(key)!;
           existing.prescription_count++;
           // Update latest prescription if newer
-          if (prescription.patient_dob > existing.latest_prescription) {
-            existing.latest_prescription = prescription.patient_dob;
+          if (new Date(prescription.created_at) > new Date(existing.latest_prescription)) {
+            existing.latest_prescription = prescription.created_at;
           }
         }
       });
@@ -72,6 +79,11 @@ export function PatientList() {
       setPatients(Array.from(patientMap.values()));
     } catch (error) {
       console.error('Error fetching patients:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load patient data. Please try again."
+      });
     } finally {
       setLoading(false);
     }
@@ -277,4 +289,4 @@ export function PatientList() {
       </AlertDialog>
     </div>
   );
-} 
+}

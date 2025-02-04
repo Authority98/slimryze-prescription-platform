@@ -84,39 +84,79 @@ export default function PrescriptionForm() {
   }, [user]);
 
   const loadPractitionerData = async () => {
+    console.log('Starting to load practitioner data...');
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const fullName = user.user_metadata.full_name || '';
-        const [firstName = '', lastName = ''] = fullName.split(' ');
-        
-        setFormData(prev => ({
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error) throw error;
+
+      if (!user) {
+        console.log('No user found');
+        return;
+      }
+
+      console.log('User found:', { email: user.email, metadata: user.user_metadata });
+      const fullName = user.user_metadata.full_name || '';
+      const [firstName = '', lastName = ''] = fullName.split(' ');
+      
+      // Validate and format address components
+      const addressComponents = [
+        user.user_metadata.clinic_street_address,
+        user.user_metadata.clinic_city,
+        user.user_metadata.clinic_state,
+        user.user_metadata.clinic_postal_code,
+        user.user_metadata.clinic_country || 'US'
+      ].filter(Boolean);
+  
+      const formattedAddress = addressComponents.length > 0 
+        ? addressComponents.join(', ')
+        : '';
+
+      console.log('Formatted clinic address:', formattedAddress);
+      
+      setFormData(prev => {
+        const newData = {
           ...prev,
           email: user.email || '',
-          doctorFirstName: firstName,
-          doctorLastName: lastName,
+          doctorFirstName: firstName.trim(),
+          doctorLastName: lastName.trim(),
           npiNumber: user.user_metadata.npi_number || '',
           deaNumber: user.user_metadata.dea_number || '',
           clinicName: user.user_metadata.clinic_name || '',
-          clinicAddress: user.user_metadata.clinic_address || '',
+          clinicStreetAddress: user.user_metadata.clinic_street_address || '',
+          clinicCity: user.user_metadata.clinic_city || '',
+          clinicState: user.user_metadata.clinic_state || '',
+          clinicPostalCode: user.user_metadata.clinic_postal_code || '',
+          clinicCountry: user.user_metadata.clinic_country || 'US',
           clinicPhone: user.user_metadata.clinic_phone || '',
           clinicFax: user.user_metadata.clinic_fax || '',
-        }));
-      }
+        };
+        console.log('Updated form data:', newData);
+        return newData;
+      });
     } catch (error) {
       console.error('Error loading practitioner data:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load practitioner data. Please try again."
+      });
     } finally {
+      console.log('Finished loading practitioner data');
       setFormLoading(false);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    console.log('Form submission started...');
+    if (!user) {
+      console.log('No user found, aborting submission');
+      return;
+    }
     
     setFormLoading(true);
     try {
-      // First, check if practitioner exists
+      console.log('Checking if practitioner exists...');
       const { data: practitioner, error: practitionerError } = await supabase
         .from('practitioners')
         .select('id')
@@ -124,17 +164,20 @@ export default function PrescriptionForm() {
         .single();
 
       if (practitionerError) {
-        // Create practitioner record if it doesn't exist
+        console.log('Practitioner not found, creating new practitioner record...');
+        const practitionerData = {
+          id: user.id,
+          full_name: `${formData.doctorFirstName} ${formData.doctorLastName}`,
+          license_number: formData.npiNumber,
+          clinic_name: formData.clinicName,
+          clinic_address: formData.clinicAddress,
+          clinic_phone: formData.clinicPhone
+        };
+        console.log('New practitioner data:', practitionerData);
+
         const { error: insertError } = await supabase
           .from('practitioners')
-          .insert([{
-            id: user.id,
-            full_name: `${formData.doctorFirstName} ${formData.doctorLastName}`,
-            license_number: formData.npiNumber,
-            clinic_name: formData.clinicName,
-            clinic_address: formData.clinicAddress,
-            clinic_phone: formData.clinicPhone
-          }]);
+          .insert([practitionerData]);
 
         if (insertError) {
           console.error('Error creating practitioner:', insertError);
@@ -145,9 +188,10 @@ export default function PrescriptionForm() {
           });
           throw new Error('Failed to create practitioner profile. Please try again.');
         }
+        console.log('Successfully created practitioner record');
       }
 
-      // Now submit the prescription
+      console.log('Preparing prescription data...');
       const prescriptionData: PrescriptionData = {
         practitioner_id: user.id,
         patient_name: `${formData.patientFirstName} ${formData.patientLastName}`,
@@ -163,7 +207,6 @@ export default function PrescriptionForm() {
         signature: formData.signature
       };
 
-      // Only add ingredients if it exists
       if (formData.ingredients) {
         prescriptionData.ingredients = formData.ingredients;
       }
@@ -184,15 +227,15 @@ export default function PrescriptionForm() {
         throw error;
       }
 
-      // Show success toast
+      console.log('Prescription submitted successfully');
       toast({
         title: "Success",
         description: "Prescription submitted successfully!",
       });
 
-      // Reset form on success
+      console.log('Resetting form...');
       handleReset();
-      // Navigate to admin area to see the prescription
+      console.log('Navigating to prescriptions list...');
       navigate('/admin/prescriptions');
     } catch (error: any) {
       console.error('Error details:', {
@@ -206,6 +249,7 @@ export default function PrescriptionForm() {
         description: error?.message || 'Failed to submit prescription. Please try again.',
       });
     } finally {
+      console.log('Form submission process completed');
       setFormLoading(false);
     }
   };
