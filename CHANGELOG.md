@@ -282,6 +282,7 @@ All notable changes to this project will be documented in this file.
   - Swapped clinic address field with last name for consistent layout
   - Added tooltips to all form fields with helpful descriptions
   - Swapped postal code and country fields with city and state fields
+  - Swapped phone number field with postal code and country fields
 - Removed date of birth field from Patient Information section
 - Improved form layout and field organization
   - Swapped clinic address field with doctor's last name in Practitioner Information

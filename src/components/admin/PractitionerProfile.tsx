@@ -209,42 +209,22 @@ export function PractitionerProfile() {
                     </div>
                   </FormFieldTooltip>
 
-                  <div className="grid grid-cols-2 gap-2">
-                    <FormFieldTooltip
-                      title="Postal Code"
-                      description="Your clinic's postal code"
-                    >
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          type="text"
-                          name="clinic_postal_code"
-                          placeholder="Postal Code"
-                          value={formData.clinic_postal_code}
-                          onChange={handleChange}
-                          className="pl-10"
-                        />
-                      </div>
-                    </FormFieldTooltip>
-
-                    <FormFieldTooltip
-                      title="Country"
-                      description="Your clinic's country"
-                    >
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          type="text"
-                          name="clinic_country"
-                          placeholder="Country"
-                          value={formData.clinic_country}
-                          onChange={handleChange}
-                          className="pl-10"
-                          defaultValue="United States"
-                        />
-                      </div>
-                    </FormFieldTooltip>
-                  </div>
+                  <FormFieldTooltip
+                    title="Phone Number"
+                    description="Your clinic's phone number"
+                  >
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        type="text"
+                        name="clinic_phone"
+                        placeholder="Clinic Phone"
+                        value={formData.clinic_phone}
+                        onChange={handleChange}
+                        className="pl-10"
+                      />
+                    </div>
+                  </FormFieldTooltip>
                 </div>
 
                 <div className="space-y-2">
@@ -319,22 +299,42 @@ export function PractitionerProfile() {
                     </FormFieldTooltip>
                   </div>
 
-                  <FormFieldTooltip
-                    title="Phone Number"
-                    description="Your clinic's phone number"
-                  >
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        type="text"
-                        name="clinic_phone"
-                        placeholder="Clinic Phone"
-                        value={formData.clinic_phone}
-                        onChange={handleChange}
-                        className="pl-10"
-                      />
-                    </div>
-                  </FormFieldTooltip>
+                  <div className="grid grid-cols-2 gap-2">
+                    <FormFieldTooltip
+                      title="Postal Code"
+                      description="Your clinic's postal code"
+                    >
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          type="text"
+                          name="clinic_postal_code"
+                          placeholder="Postal Code"
+                          value={formData.clinic_postal_code}
+                          onChange={handleChange}
+                          className="pl-10"
+                        />
+                      </div>
+                    </FormFieldTooltip>
+
+                    <FormFieldTooltip
+                      title="Country"
+                      description="Your clinic's country"
+                    >
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          type="text"
+                          name="clinic_country"
+                          placeholder="Country"
+                          value={formData.clinic_country}
+                          onChange={handleChange}
+                          className="pl-10"
+                          defaultValue="United States"
+                        />
+                      </div>
+                    </FormFieldTooltip>
+                  </div>
 
                   <FormFieldTooltip
                     title="Fax Number"
