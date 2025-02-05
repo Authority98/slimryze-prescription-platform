@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { User, Mail, Phone, MapPin, Calendar, Users, FileText } from 'lucide-react';
 import { supabase } from '../../lib/supabaseClient';
+import { useToast } from "../ui/use-toast";
 
 interface Props {
   patient: {
@@ -26,7 +27,7 @@ interface Prescription {
 
 export function PatientDetailsDialog({ patient, onClose }: Props) {
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     fetchPrescriptionHistory();
@@ -56,8 +57,6 @@ export function PatientDetailsDialog({ patient, onClose }: Props) {
         title: "Error",
         description: "Failed to load prescription history. Please try again."
       });
-    } finally {
-      setLoading(false);
     }
   };
 

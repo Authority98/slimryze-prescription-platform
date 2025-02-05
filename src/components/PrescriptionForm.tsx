@@ -38,7 +38,11 @@ const initialFormData: FormData = {
   npiNumber: '',
   deaNumber: '',
   clinicName: '',
-  clinicAddress: '',
+  clinicStreetAddress: '',
+  clinicCity: '',
+  clinicState: '',
+  clinicPostalCode: '',
+  clinicCountry: 'US',
   clinicPhone: '',
   clinicFax: '',
   patientFirstName: '',
@@ -64,7 +68,7 @@ const initialFormData: FormData = {
 5. Phentermine   12.5mg: Reduces appetite and food consumption
 6. Metformin     250mg: Reduces insulin resistance preventing the conversion of carbohydrates into fat
 7. Methycobalamin 500mg - Boosts metabolism and energy`,
-  signature: '',
+  signature: ''
 };
 
 export default function PrescriptionForm() {
@@ -85,43 +89,38 @@ export default function PrescriptionForm() {
 
   const loadPractitionerData = async () => {
     try {
-      const { data: { user }, error } = await supabase.auth.getUser();
-      if (error) throw error;
-
-      if (!user) return;
-
-      const fullName = user.user_metadata.full_name || '';
-      const [firstName = '', lastName = ''] = fullName.split(' ');
+      const initialData = localStorage.getItem('initialProfileData');
+      if (initialData) {
+        const parsedData = JSON.parse(initialData);
+        setFormData(parsedData);
+        localStorage.removeItem('initialProfileData');
+        return;
+      }
       
-      // Validate and format address components
-      const addressComponents = [
-        user.user_metadata.clinic_street_address,
-        user.user_metadata.clinic_city,
-        user.user_metadata.clinic_state,
-        user.user_metadata.clinic_postal_code,
-        user.user_metadata.clinic_country || 'US'
-      ].filter(Boolean);
-  
-      const formattedAddress = addressComponents.length > 0 
-        ? addressComponents.join(', ')
-        : '';
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError) throw userError;
       
-      setFormData(prev => ({
-        ...prev,
-        email: user.email || '',
-        doctorFirstName: firstName.trim(),
-        doctorLastName: lastName.trim(),
-        npiNumber: user.user_metadata.npi_number || '',
-        deaNumber: user.user_metadata.dea_number || '',
-        clinicName: user.user_metadata.clinic_name || '',
-        clinicStreetAddress: user.user_metadata.clinic_street_address || '',
-        clinicCity: user.user_metadata.clinic_city || '',
-        clinicState: user.user_metadata.clinic_state || '',
-        clinicPostalCode: user.user_metadata.clinic_postal_code || '',
-        clinicCountry: user.user_metadata.clinic_country || 'US',
-        clinicPhone: user.user_metadata.clinic_phone || '',
-        clinicFax: user.user_metadata.clinic_fax || '',
-      }));
+      if (user) {
+        const fullName = user.user_metadata.full_name || '';
+        const [firstName = '', lastName = ''] = fullName.split(' ');
+        
+        setFormData(prev => ({
+          ...prev,
+          email: user.email || '',
+          doctorFirstName: firstName.trim(),
+          doctorLastName: lastName.trim(),
+          npiNumber: user.user_metadata.npi_number || '',
+          deaNumber: user.user_metadata.dea_number || '',
+          clinicName: user.user_metadata.clinic_name || '',
+          clinicStreetAddress: user.user_metadata.clinic_street_address || '',
+          clinicCity: user.user_metadata.clinic_city || '',
+          clinicState: user.user_metadata.clinic_state || '',
+          clinicPostalCode: user.user_metadata.clinic_postal_code || '',
+          clinicCountry: user.user_metadata.clinic_country || 'US',
+          clinicPhone: user.user_metadata.clinic_phone || '',
+          clinicFax: user.user_metadata.clinic_fax || '',
+        }));
+      }
     } catch (error) {
       toast({
         variant: "destructive",
@@ -139,19 +138,19 @@ export default function PrescriptionForm() {
     
     setFormLoading(true);
     try {
-      const { data: practitioner, error: practitionerError } = await supabase
+      const { data } = await supabase
         .from('practitioners')
         .select('id')
         .eq('id', user.id)
         .single();
 
-      if (practitionerError) {
+      if (!data) {
         const practitionerData = {
           id: user.id,
           full_name: `${formData.doctorFirstName} ${formData.doctorLastName}`,
           license_number: formData.npiNumber,
           clinic_name: formData.clinicName,
-          clinic_address: formData.clinicAddress,
+          clinic_address: formData.clinicStreetAddress,
           clinic_phone: formData.clinicPhone
         };
 
@@ -234,7 +233,7 @@ export default function PrescriptionForm() {
       npiNumber: prev.npiNumber,
       deaNumber: prev.deaNumber,
       clinicName: prev.clinicName,
-      clinicAddress: prev.clinicAddress,
+      clinicStreetAddress: prev.clinicStreetAddress,
       clinicPhone: prev.clinicPhone,
       clinicFax: prev.clinicFax,
     }));

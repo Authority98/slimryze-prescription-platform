@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
-import { LoadingPage } from '../ui/loading';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
-import { User, Mail, Phone, Search, Calendar, Eye, Trash2 } from 'lucide-react';
-import { PatientDetailsDialog } from './PatientDetailsDialog';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "../ui/alert-dialog";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Search, User, Mail, Phone, Eye, Trash2 } from 'lucide-react';
+import { LoadingPage } from "../ui/loading";
 import { useToast } from "../ui/use-toast";
+import { PatientDetailsDialog } from './PatientDetailsDialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../ui/alert-dialog";
 
 interface Patient {
   patient_name: string;

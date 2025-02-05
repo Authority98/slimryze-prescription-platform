@@ -30,7 +30,7 @@ export function PractitionerProfile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const { metadata, updateMetadata } = useUserMetadata();
+  const { updateMetadata } = useUserMetadata();
   const [formData, setFormData] = useState<FormData>({
     email: '',
     first_name: '',
