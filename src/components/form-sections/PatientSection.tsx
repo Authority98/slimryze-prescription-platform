@@ -48,21 +48,26 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
       if (error) throw error;
 
       if (data && data.length > 0) {
-        // Get the most recent prescription
         const mostRecent = data[0];
         
         // Update form with found patient data
         const updates = {
-          patientFirstName: mostRecent.patient_first_name,
-          patientLastName: mostRecent.patient_last_name,
+          patientFirstName: mostRecent.patient_name?.split(' ')[0] || '',
+          patientLastName: mostRecent.patient_name?.split(' ').slice(1).join(' ') || '',
           patientEmail: mostRecent.patient_email,
           patientPhone: mostRecent.patient_phone,
-          patientStreetAddress: mostRecent.patient_street_address,
-          patientCity: mostRecent.patient_city,
-          patientState: mostRecent.patient_state,
-          patientPostalCode: mostRecent.patient_postal_code,
-          patientCountry: mostRecent.patient_country,
+          patientStreetAddress: mostRecent.patient_address?.split(',')[0]?.trim() || '',
+          patientCity: mostRecent.patient_address?.split(',')[1]?.trim() || '',
+          patientState: mostRecent.patient_address?.split(',')[2]?.trim() || '',
+          patientPostalCode: mostRecent.patient_address?.split(',')[3]?.trim() || '',
+          patientCountry: mostRecent.patient_address?.split(',')[4]?.trim() || 'US',
           patientGender: mostRecent.patient_gender,
+          patientDob: mostRecent.patient_dob,
+          // Add prescription details
+          dosage: mostRecent.dosage || '',
+          quantity: mostRecent.quantity?.toString() || '',
+          refills: mostRecent.refills?.toString() || '',
+          instructions: mostRecent.instructions || ''
         };
 
         Object.entries(updates).forEach(([key, value]) => {
@@ -76,11 +81,15 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
 
         toast({
           title: "Success",
-          description: "Patient information loaded successfully",
+          description: "Patient information and prescription details loaded successfully",
         });
       }
     } catch (error: any) {
-      console.error('Error fetching patient data:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load patient data. Please try again."
+      });
     }
   };
 
@@ -339,14 +348,22 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
                   isReadOnly={isReadOnly}
                 >
                   <div className="relative">
-                    <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Calendar 
+                      className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" 
+                    />
                     <Input
                       type="date"
                       name="patientDob"
                       placeholder="Date of Birth"
                       value={formData.patientDob}
                       onChange={onChange}
-                      className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
+                      onClick={() => {
+                        const dateInput = document.querySelector('input[name="patientDob"]');
+                        if (dateInput) {
+                          (dateInput as HTMLInputElement).showPicker();
+                        }
+                      }}
+                      className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''} [&::-webkit-calendar-picker-indicator]:hidden cursor-pointer`}
                       required
                       readOnly={isReadOnly}
                     />

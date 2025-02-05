@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+- Enhanced auto-fetch functionality in prescription form
+  - Improved patient data lookup reliability
+  - Optimized debounced search performance
+  - Fixed data consistency across form fields
+  - Added better error handling for lookup failures
+  - Improved loading state indicators
+- Resolved date format consistency in patient records
+- Enhanced error handling for patient data lookup
+
 ### Added
 - Enhanced Patient Information section with auto-fetch functionality
   - Added automatic patient data lookup by email and phone

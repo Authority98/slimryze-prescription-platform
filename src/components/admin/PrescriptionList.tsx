@@ -49,7 +49,6 @@ export function PrescriptionList() {
 
   const loadPrescriptions = async () => {
     try {
-      console.log('Loading prescriptions...');
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
@@ -61,11 +60,9 @@ export function PrescriptionList() {
 
       if (error) throw error;
       if (data) {
-        console.log('Prescriptions loaded:', data.length, 'prescriptions found');
         setPrescriptions(data);
       }
     } catch (error) {
-      console.error('Error loading prescriptions:', error);
       toast({
         variant: "destructive",
         title: "Error",
@@ -75,6 +72,8 @@ export function PrescriptionList() {
       setLoading(false);
     }
   };
+
+
 
   const handleNewPrescription = () => {
     navigate('/');
@@ -321,4 +320,4 @@ export function PrescriptionList() {
       </AlertDialog>
     </div>
   );
-} 
+}
