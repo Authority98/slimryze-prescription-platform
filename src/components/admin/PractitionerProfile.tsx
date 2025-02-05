@@ -5,10 +5,10 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { User, Hash, Building2, MapPin, Phone, Mail, FileText, Printer } from "lucide-react";
 import { LoadingPage } from "../ui/loading";
-import { Alert, AlertDescription } from "../ui/alert";
 import { useUserMetadata } from '../auth/UserMetadataContext';
 import { FormFieldTooltip } from '../ui/form-field-tooltip';
 import { TooltipProvider } from '../ui/tooltip';
+import { useToast } from "../ui/use-toast";
 
 interface FormData {
   email: string;
@@ -28,8 +28,7 @@ interface FormData {
 
 export function PractitionerProfile() {
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const { toast } = useToast();
   const { updateMetadata } = useUserMetadata();
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -53,7 +52,7 @@ export function PractitionerProfile() {
 
   const fetchProfile = async () => {
     try {
-      setError(null);
+
       const initialData = localStorage.getItem('initialProfileData');
       if (initialData) {
         const parsedData = JSON.parse(initialData);
@@ -86,7 +85,11 @@ export function PractitionerProfile() {
         });
       }
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Error fetching profile');
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error instanceof Error ? error.message : 'Error fetching profile'
+      });
     } finally {
       setLoading(false);
     }
@@ -95,8 +98,7 @@ export function PractitionerProfile() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
-    setSuccess(null);
+
 
     try {
       await updateMetadata({
@@ -113,9 +115,16 @@ export function PractitionerProfile() {
         clinic_fax: formData.clinic_fax,
       });
 
-      setSuccess('Profile updated successfully!');
+      toast({
+        title: "Success",
+        description: "Profile updated successfully!"
+      });
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Error updating profile');
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error instanceof Error ? error.message : 'Error updating profile'
+      });
     } finally {
       setLoading(false);
     }
@@ -143,16 +152,7 @@ export function PractitionerProfile() {
             </div>
           </CardHeader>
           <CardContent>
-            {error && (
-              <Alert variant="destructive" className="mb-6 border-red-500/50 bg-red-500/10">
-                <AlertDescription className="text-red-600">{error}</AlertDescription>
-              </Alert>
-            )}
-            {success && (
-              <Alert className="mb-6 border-green-500/50 bg-green-500/10">
-                <AlertDescription className="text-green-600">{success}</AlertDescription>
-              </Alert>
-            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

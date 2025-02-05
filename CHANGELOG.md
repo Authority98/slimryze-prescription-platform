@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2024-03-23
+
+### Added
+- Enhanced Practitioner Profile management
+  - Added first name and last name fields for better name handling
+  - Improved form layout with grid system for better organization
+  - Added tooltips with helpful descriptions for each field
+  - Enhanced clinic information fields with proper validation
+  - Added visual icons for better field identification
+  - Implemented real-time form updates with proper error handling
+  - Added loading states during profile updates
+  - Improved success/error notifications with toast messages
+
 ## [1.0.0] - 2024-03-21
 
 ### Added
