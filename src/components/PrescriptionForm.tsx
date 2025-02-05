@@ -256,12 +256,13 @@ export default function PrescriptionForm() {
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-background relative overflow-hidden py-6 sm:py-12">
-        {/* Decorative elements for the entire page */}
-        <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] bg-[length:50px_50px] print-hide" />
+        {/* Enhanced decorative elements */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] print-hide" />
         <div className="absolute inset-0 flex items-center justify-center print-hide">
-          <div className="h-[300px] w-[300px] bg-purple-500/10 rounded-full blur-3xl" />
-          <div className="h-[300px] w-[300px] bg-blue-500/10 rounded-full blur-3xl -translate-x-1/3" />
+          <div className="h-[500px] w-[500px] bg-gradient-to-tr from-purple-500/20 to-blue-500/20 rounded-full blur-3xl animate-pulse" />
+          <div className="h-[400px] w-[400px] bg-gradient-to-bl from-pink-500/20 to-indigo-500/20 rounded-full blur-3xl -translate-x-1/3 animate-pulse delay-700" />
         </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background print-hide" />
 
         {/* Main content container */}
         <div className="relative w-full max-w-4xl mx-auto px-4">
