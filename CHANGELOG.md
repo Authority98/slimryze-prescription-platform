@@ -13,7 +13,26 @@ All notable changes to this project will be documented in this file.
 - Print-optimized prescription forms
 - Responsive design with beautiful animations
 
-## [Unreleased]
+## [1.1.0] - 2024-03-22
+
+### Added
+- Enhanced Patient Information section with auto-fetch functionality
+  - Added automatic patient data lookup by email and phone
+  - Implemented debounced search to optimize performance
+  - Added visual indicators for auto-fetch functionality
+  - Added success toast notifications for data loading
+  - Maintained data consistency across form fields
+- Enhanced dashboard with comprehensive features:
+  - Added welcoming header with practitioner name and clinic
+  - Implemented quick stats with total prescriptions counter
+  - Created quick action buttons for common tasks
+  - Added recent prescriptions list with detailed view
+  - Integrated prescription details dialog
+  - Added smooth transitions and hover effects
+- Added prescription management system with full CRUD operations
+- Added email field to Practitioner Information section
+- Implemented responsive navigation with active states
+- Added beautiful loading animations across the application
 
 ### Fixed
 - Enhanced auto-fetch functionality in prescription form
@@ -25,29 +44,7 @@ All notable changes to this project will be documented in this file.
 - Resolved date format consistency in patient records
 - Enhanced error handling for patient data lookup
 
-### Added
-- Enhanced Patient Information section with auto-fetch functionality
-  - Added automatic patient data lookup by email and phone
-  - Implemented debounced search to optimize performance
-  - Added visual indicators for auto-fetch functionality
-  - Added success toast notifications for data loading
-  - Maintained data consistency across form fields
-- Initial project setup with React, TypeScript, and Vite
-- Integrated Supabase for authentication and database
-- Added shadcn/ui components for consistent UI
-- Implemented authentication system with login and signup
-- Created admin area with protected routes
-- Added beautiful loading animations across the application
-- Implemented responsive navigation with active states
-- Enhanced dashboard with comprehensive features:
-  - Added welcoming header with practitioner name and clinic
-  - Implemented quick stats with total prescriptions counter
-  - Created quick action buttons for common tasks
-  - Added recent prescriptions list with detailed view
-  - Integrated prescription details dialog
-  - Added smooth transitions and hover effects
-- Added prescription management system
-- Added email field to Practitioner Information section
+## [1.0.0] - 2024-03-21
 - Added tooltips to form fields with helpful information
 - Added automatic date and time updates in Patient Information section
 - Added header with logged-in user information

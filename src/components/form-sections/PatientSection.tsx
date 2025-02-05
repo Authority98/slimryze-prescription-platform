@@ -335,7 +335,6 @@ export function PatientSection({ formData, onChange, isReadOnly }: Props) {
                       className={`pl-10 ${isReadOnly ? readOnlyStyles.input : ''}`}
                       required
                       readOnly={isReadOnly}
-                      defaultValue="US"
                     />
                   </div>
                 </FormFieldTooltip>
